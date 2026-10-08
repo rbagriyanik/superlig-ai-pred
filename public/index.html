@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Süper Lig AI Predict - Yapay Zeka Futbol Tahminleri</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white font-sans min-h-screen">
+
+  <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">⚽</span>
+        <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400 bg-clip-text text-transparent">
+          SÜPER LİG AI PREDICT
+        </h1>
+      </div>
+      <span class="text-xs font-semibold px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full">
+        🇹🇷 Trendyol Süper Lig
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold text-slate-100">Haftanın Maç Tahminleri</h2>
+      <p class="text-slate-400 text-sm mt-2">
+        Yapay zeka analizini ve detaylı maç tahminlerini açmak için kısa bir reklam izleyin.
+      </p>
+    </div>
+
+    <div id="mac-listesi" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+  </main>
+
+  <script>
+    async function maclariYukle() {
+      const res = await fetch('/api/maclar');
+      const maclar = await res.json();
+      
+      const container = document.getElementById('mac-listesi');
+      container.innerHTML = maclar.map(mac => `
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition shadow-xl">
+          <div class="flex justify-between items-center text-xs text-slate-400 mb-3">
+            <span class="font-bold text-amber-400">SÜPER LİG</span>
+            <span>${mac.tarih}</span>
+          </div>
+
+          <div class="flex justify-between items-center text-lg font-bold text-white my-4">
+            <div class="w-2/5 text-right">${mac.ev}</div>
+            <div class="text-xs px-2 py-1 bg-slate-800 text-slate-400 rounded">VS</div>
+            <div class="w-2/5 text-left">${mac.dep}</div>
+          </div>
+
+          <div id="content-${mac.id}">
+            <div class="bg-slate-950/80 border border-dashed border-slate-800 rounded-xl p-4 text-center">
+              <p class="text-xs text-slate-400 mb-3">🔒 AI Skoru ve Detaylı Analiz Kilitli</p>
+              <button onclick="reklamIzleVeAc(${mac.id})" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-xl transition transform active:scale-95 shadow-lg flex items-center justify-center gap-2 mx-auto">
+                <span>🎬</span> Reklam İzle & Tahmini Aç
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function reklamIzleVeAc(macId) {
+      const contentEl = document.getElementById(`content-${macId}`);
+      
+      contentEl.innerHTML = `
+        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-center">
+          <p class="text-xs text-amber-400 animate-pulse font-semibold">🎬 Reklam Oynatılıyor... (Lütfen Bekleyin)</p>
+        </div>
+      `;
+
+      setTimeout(async () => {
+        try {
+          const res = await fetch('/api/tahmin-al', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ macId })
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            const t = data.tahmin;
+            contentEl.innerHTML = `
+              <div class="bg-slate-950 border border-emerald-500/40 rounded-xl p-4">
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                  <span class="text-xs text-emerald-400 font-bold">✅ AI Tahmini Açıldı</span>
+                  <span class="text-xs font-bold text-amber-400">Güven: ${t.guven}</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 text-center my-3">
+                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
+                    <div class="text-[10px] text-slate-400">Maç Sonucu</div>
+                    <div class="text-sm font-extrabold text-emerald-400">${t.ms}</div>
+                  </div>
+                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
+                    <div class="text-[10px] text-slate-400">2.5 Alt/Üst</div>
+                    <div class="text-sm font-extrabold text-emerald-400">${t.alt_ust}</div>
+                  </div>
+                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
+                    <div class="text-[10px] text-slate-400">Skor Tahmini</div>
+                    <div class="text-sm font-extrabold text-amber-400">${t.skor_tahmini}</div>
+                  </div>
+                </div>
+
+                <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80">
+                  ${t.analiz}
+                </p>
+              </div>
+            `;
+          }
+        } catch (err) {
+          contentEl.innerHTML = `<p class="text-xs text-red-400 text-center">Hata oluştu. Tekrar deneyin.</p>`;
+        }
+      }, 3000);
+    }
+
+    maclariYukle();
+  </script>
+</body>
+</html>
