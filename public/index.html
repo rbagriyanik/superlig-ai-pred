@@ -5,13 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Süper Lig AI Tahmin & Analiz</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Adsterra Reklam Kodları -->
-  <script data-cfasync="false" src="https://czernik.org/14/a28632eed0d554ce50b11eddbaf19bfb"></script>
-  <script data-cfasync="false" src="https://capitalhospitals.org/1/26a79696fe58683a884f18ee4a21bb73"></script>
-  <style>
-    /* Reklam katmanının tahmini görmeyi engellememesi için stil düzenlemesi */
-    body { overflow-x: hidden; }
-  </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen font-sans pb-12">
 
@@ -35,7 +28,7 @@
     
     <!-- Info Banner -->
     <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-8 text-sm text-slate-300 flex items-center justify-between">
-      <span>💡 AI Tahminlerini açmak için <b>Reklamı İzle & Tahmini Aç</b> butonuna tıklamanız yeterlidir.</span>
+      <span>💡 AI Tahminlerini açmak için <b>Tahmini Aç</b> butonuna tıklamanız yeterlidir.</span>
     </div>
 
     <!-- Match List -->
@@ -73,14 +66,14 @@
               </div>
             </div>
 
-            <!-- Ad Lock Section -->
+            <!-- Lock Section -->
             <div id="lock-zone-${mac.id}" class="mt-4 border-t border-slate-700/50 pt-4 text-center">
               <button onclick="tahminAc(${mac.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition active:scale-95">
-                <span>🔓 Reklamı İzle & Tahmini Aç</span>
+                <span>🔓 AI Tahminini Aç</span>
               </button>
             </div>
 
-            <!-- AI Result Section (Hidden Initially) -->
+            <!-- AI Result Section -->
             <div id="result-zone-${mac.id}" class="hidden mt-4 border-t border-slate-700/50 pt-4 bg-slate-900/50 p-4 rounded-lg">
               <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-center">
                 <div class="bg-slate-800 p-2 rounded border border-slate-700">
@@ -118,38 +111,34 @@
       const lockZone = document.getElementById(`lock-zone-${macId}`);
       const resultZone = document.getElementById(`result-zone-${macId}`);
       
-      // Butona tıklandığında arka planda reklam tetiklenirken kilit alanını güncelliyoruz
       lockZone.innerHTML = `
         <div class="py-2 text-emerald-400 animate-pulse text-sm font-semibold">
-          ⏳ AI Tahmini Açılıyor...
+          ⏳ AI Tahmini Hazırlanıyor...
         </div>
       `;
 
-      // 2.5 saniye sonra AI tahminini doğrudan gösteriyoruz
-      setTimeout(async () => {
-        try {
-          const res = await fetch('/api/tahmin-al', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ macId })
-          });
-          
-          const data = await res.json();
+      try {
+        const res = await fetch('/api/tahmin-al', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ macId })
+        });
+        
+        const data = await res.json();
 
-          if (data.success) {
-            lockZone.classList.add('hidden');
-            resultZone.classList.remove('hidden');
+        if (data.success) {
+          lockZone.classList.add('hidden');
+          resultZone.classList.remove('hidden');
 
-            document.getElementById(`ms-${macId}`).innerText = data.tahmin.ms;
-            document.getElementById(`altust-${macId}`).innerText = data.tahmin.alt_ust;
-            document.getElementById(`skor-${macId}`).innerText = data.tahmin.skor_tahmini;
-            document.getElementById(`guven-${macId}`).innerText = data.tahmin.guven;
-            document.getElementById(`analiz-${macId}`).innerText = data.tahmin.analiz;
-          }
-        } catch (err) {
-          lockZone.innerHTML = `<span class="text-rose-400 text-sm">Hata oluştu. Tekrar deneyin.</span>`;
+          document.getElementById(`ms-${macId}`).innerText = data.tahmin.ms;
+          document.getElementById(`altust-${macId}`).innerText = data.tahmin.alt_ust;
+          document.getElementById(`skor-${macId}`).innerText = data.tahmin.skor_tahmini;
+          document.getElementById(`guven-${macId}`).innerText = data.tahmin.guven;
+          document.getElementById(`analiz-${macId}`).innerText = data.tahmin.analiz;
         }
-      }, 2500);
+      } catch (err) {
+        lockZone.innerHTML = `<span class="text-rose-400 text-sm">Hata oluştu. Tekrar deneyin.</span>`;
+      }
     }
 
     window.onload = maclariYukle;
