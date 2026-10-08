@@ -12,13 +12,17 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// Güncel Süper Lig / Lig Fikstürü
+// Süper Lig 7. Hafta Güncel Fikstürü
 const SUPER_LIG_MACLAR = [
-  { id: 1, ev: 'Amedspor', dep: 'Gençlerbirliği', tarih: 'Bu Hafta / Canlı AI Analizi', evForm: 'G-G-B-G-G', depForm: 'B-G-M-G-B' },
-  { id: 2, ev: 'Galatasaray', dep: 'Trabzonspor', tarih: 'Bu Hafta', evForm: 'G-G-M-G-G', depForm: 'G-B-G-M-G' },
-  { id: 3, ev: 'Fenerbahçe', dep: 'Beşiktaş', tarih: 'Bu Hafta', evForm: 'G-G-G-G-M', depForm: 'M-G-B-M-G' },
-  { id: 4, ev: 'Samsunspor', dep: 'Başakşehir', tarih: 'Bu Hafta', evForm: 'M-G-G-B-M', depForm: 'G-M-G-G-B' },
-  { id: 5, ev: 'Göztepe', dep: 'Konyaspor', tarih: 'Bu Hafta', evForm: 'B-G-M-B-B', depForm: 'B-G-M-B-G' }
+  { id: 1, ev: 'Gençlerbirliği', dep: 'Amedspor', tarih: '10 Ekim Cumartesi 13:30', evForm: 'B-G-M-G-B', depForm: 'G-G-B-G-G' },
+  { id: 2, ev: 'Galatasaray', dep: 'Kasımpaşa', tarih: '9 Ekim Cuma 20:00', evForm: 'G-G-M-G-G', depForm: 'B-M-B-G-B' },
+  { id: 3, ev: 'Samsunspor', dep: 'Trabzonspor', tarih: '10 Ekim Cumartesi 16:00', evForm: 'M-G-G-B-M', depForm: 'G-B-G-M-G' },
+  { id: 4, ev: 'Alanyaspor', dep: 'Erzurumspor FK', tarih: '10 Ekim Cumartesi 16:00', evForm: 'B-M-G-B-M', depForm: 'G-M-B-G-M' },
+  { id: 5, ev: 'Çaykur Rizespor', dep: 'Fenerbahçe', tarih: '10 Ekim Cumartesi 19:00', evForm: 'B-M-B-M-B', depForm: 'G-G-G-G-M' },
+  { id: 6, ev: 'Konyaspor', dep: 'Başakşehir', tarih: '11 Ekim Pazar 13:30', evForm: 'B-G-M-B-G', depForm: 'G-M-G-G-B' },
+  { id: 7, ev: 'Gaziantep FK', dep: 'Çorum FK', tarih: '11 Ekim Pazar 16:00', evForm: 'M-B-G-M-B', depForm: 'B-G-M-M-G' },
+  { id: 8, ev: 'Beşiktaş', dep: 'Kocaelispor', tarih: '11 Ekim Pazar 19:00', evForm: 'M-G-B-M-G', depForm: 'G-B-M-G-M' },
+  { id: 9, ev: 'Eyüpspor', dep: 'Göztepe', tarih: '12 Ekim Pazartesi 20:00', evForm: 'M-B-M-G-M', depForm: 'B-G-M-B-B' }
 ];
 
 app.get('/api/maclar', (req, res) => {
@@ -34,20 +38,20 @@ app.post('/api/tahmin-al', async (req, res) => {
   }
 
   const prompt = `
-Sen profesyonel bir futbol analiz yapay zekasısın.
+Sen Türkiye Süper Ligi konusunda uzmanlaşmış profesyonel bir futbol analiz yapay zekasısın.
 Maç: ${mac.ev} vs ${mac.dep}
-Tarih/Etiket: ${mac.tarih}
+Tarih/Saat: ${mac.tarih}
 Ev Sahibi Formu (Son 5 Maç): ${mac.evForm}
 Deplasman Formu (Son 5 Maç): ${mac.depForm}
 
-Lütfen bu maç için SADECE geçerli bir JSON yanıtı döndür:
+Lütfen bu Süper Lig maçı için SADECE geçerli bir JSON yanıtı döndür:
 {
   "ms": "1, X veya 2",
   "alt_ust": "2.5 Üst veya 2.5 Alt",
   "kg": "KG Var veya KG Yok",
-  "guven": "%92",
-  "skor_tahmini": "2 - 1",
-  "analiz": "${mac.ev} - ${mac.dep} mücadelesine özel taktiksel analiz, form durumları ve maç atmosferini içeren 2-3 cümlelik heyecanlı Türkçe yorum."
+  "guven": "%88",
+  "skor_tahmini": "1 - 2",
+  "analiz": "${mac.ev} - ${mac.dep} karşılaşması için takımların form durumları ve taktiksel detaylarını içeren 2-3 cümlelik akıcı Türkçe yorum."
 }
 `;
 
@@ -68,4 +72,4 @@ Lütfen bu maç için SADECE geçerli bir JSON yanıtı döndür:
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Futbol AI Sunucusu http://localhost:${PORT} üzerinde çalışıyor...`));
+app.listen(PORT, () => console.log(`Süper Lig AI Sunucusu http://localhost:${PORT} üzerinde çalışıyor...`));
