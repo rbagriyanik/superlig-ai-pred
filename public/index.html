@@ -3,73 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Süper Lig AI Predict - Yapay Zeka Futbol Tahminleri</title>
+  <title>Süper Lig AI Tahmin & Analiz</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Adsterra 1. Reklam Kodu -->
+  <script data-cfasync="false" src="https://czernik.org/14/a28632eed0d554ce50b11eddbaf19bfb"></script>
+  <!-- Adsterra 2. Reklam Kodu -->
+  <script data-cfasync="false" src="https://capitalhospitals.org/1/26a79696fe58683a884f18ee4a21bb73"></script>
 </head>
-<body class="bg-slate-950 text-white font-sans min-h-screen">
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans pb-12">
 
-  <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <span class="text-2xl">⚽</span>
-        <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400 bg-clip-text text-transparent">
-          SÜPER LİG AI PREDICT
+  <!-- Header -->
+  <header class="bg-slate-800 border-b border-slate-700 py-6 mb-8 shadow-lg">
+    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-emerald-400 flex items-center gap-2">
+          ⚽ Süper Lig AI Tahmin
         </h1>
+        <p class="text-xs text-slate-400 mt-1">Yapay Zeka Destekli Maç Analizleri ve İstatistikler</p>
       </div>
-      <span class="text-xs font-semibold px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full">
-        🇹🇷 Trendyol Süper Lig
+      <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-semibold">
+        7. Hafta Canlı
       </span>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 py-8">
-    <div class="text-center mb-10">
-      <h2 class="text-3xl font-bold text-slate-100">Haftanın Maç Tahminleri</h2>
-      <p class="text-slate-400 text-sm mt-2">
-        Yapay zeka analizini ve detaylı maç tahminlerini açmak için kısa bir reklam izleyin.
-      </p>
+  <!-- Container -->
+  <main class="max-w-4xl mx-auto px-4">
+    
+    <!-- Info Banner -->
+    <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-8 text-sm text-slate-300 flex items-center justify-between">
+      <span>💡 AI Tahminlerini kilitli alandan açmak için <b>Reklamı İzle & Tahmini Aç</b> butonuna basmanız yeterlidir.</span>
     </div>
 
-    <div id="mac-listesi" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    <!-- Match List -->
+    <div id="mac-listesi" class="space-y-6">
+      <div class="text-center py-12 text-slate-500">Maçlar yükleniyor...</div>
+    </div>
+
   </main>
 
   <script>
     async function maclariYukle() {
-      const res = await fetch('/api/maclar');
-      const maclar = await res.json();
-      
-      const container = document.getElementById('mac-listesi');
-      container.innerHTML = maclar.map(mac => `
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition shadow-xl">
-          <div class="flex justify-between items-center text-xs text-slate-400 mb-3">
-            <span class="font-bold text-amber-400">SÜPER LİG</span>
-            <span>${mac.tarih}</span>
-          </div>
+      try {
+        const response = await fetch('/api/maclar');
+        const maclar = await response.json();
+        
+        const container = document.getElementById('mac-listesi');
+        container.innerHTML = '';
 
-          <div class="flex justify-between items-center text-lg font-bold text-white my-4">
-            <div class="w-2/5 text-right">${mac.ev}</div>
-            <div class="text-xs px-2 py-1 bg-slate-800 text-slate-400 rounded">VS</div>
-            <div class="w-2/5 text-left">${mac.dep}</div>
-          </div>
+        maclar.forEach(mac => {
+          const card = document.createElement('div');
+          card.className = 'bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:border-slate-600 transition';
+          
+          card.innerHTML = `
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+              <div class="text-xs text-slate-400 bg-slate-900 px-3 py-1 rounded-full font-mono">
+                📅 ${mac.tarih}
+              </div>
+              <div class="flex items-center gap-6 text-lg font-bold">
+                <span class="text-slate-200">${mac.ev}</span>
+                <span class="text-xs text-emerald-400 bg-emerald-950/50 px-2 py-1 rounded border border-emerald-800">VS</span>
+                <span class="text-slate-200">${mac.dep}</span>
+              </div>
+              <div class="text-xs text-slate-400 font-mono">
+                Form: <span class="text-emerald-400">${mac.evForm}</span> / <span class="text-rose-400">${mac.depForm}</span>
+              </div>
+            </div>
 
-          <div id="content-${mac.id}">
-            <div class="bg-slate-950/80 border border-dashed border-slate-800 rounded-xl p-4 text-center">
-              <p class="text-xs text-slate-400 mb-3">🔒 AI Skoru ve Detaylı Analiz Kilitli</p>
-              <button onclick="reklamIzleVeAc(${mac.id})" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-xl transition transform active:scale-95 shadow-lg flex items-center justify-center gap-2 mx-auto">
-                <span>🎬</span> Reklam İzle & Tahmini Aç
+            <!-- Ad Lock Section -->
+            <div id="lock-zone-${mac.id}" class="mt-4 border-t border-slate-700/50 pt-4 text-center">
+              <button onclick="tahminAc(${mac.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition active:scale-95">
+                <span>🔓 Reklamı İzle & Tahmini Aç</span>
               </button>
             </div>
-          </div>
-        </div>
-      `).join('');
+
+            <!-- AI Result Section (Hidden Initially) -->
+            <div id="result-zone-${mac.id}" class="hidden mt-4 border-t border-slate-700/50 pt-4 bg-slate-900/50 p-4 rounded-lg">
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-center">
+                <div class="bg-slate-800 p-2 rounded border border-slate-700">
+                  <div class="text-xs text-slate-400">Maç Sonucu</div>
+                  <div id="ms-${mac.id}" class="font-bold text-emerald-400 text-lg">-</div>
+                </div>
+                <div class="bg-slate-800 p-2 rounded border border-slate-700">
+                  <div class="text-xs text-slate-400">2.5 Alt/Üst</div>
+                  <div id="altust-${mac.id}" class="font-bold text-amber-400 text-lg">-</div>
+                </div>
+                <div class="bg-slate-800 p-2 rounded border border-slate-700">
+                  <div class="text-xs text-slate-400">Skor Tahmini</div>
+                  <div id="skor-${mac.id}" class="font-bold text-sky-400 text-lg">-</div>
+                </div>
+                <div class="bg-slate-800 p-2 rounded border border-slate-700">
+                  <div class="text-xs text-slate-400">Güven Oranı</div>
+                  <div id="guven-${mac.id}" class="font-bold text-purple-400 text-lg">-</div>
+                </div>
+              </div>
+              <div class="bg-slate-800/80 p-3 rounded border border-slate-700/60 text-sm text-slate-300">
+                <span class="text-xs text-emerald-400 font-semibold block mb-1">🤖 AI YAPAY ZEKA ANALİZİ</span>
+                <p id="analiz-${mac.id}">Analiz hazırlanıyor...</p>
+              </div>
+            </div>
+          `;
+          
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Maçlar yüklenemedi:", err);
+      }
     }
 
-    async function reklamIzleVeAc(macId) {
-      const contentEl = document.getElementById(`content-${macId}`);
+    async function tahminAc(macId) {
+      const lockZone = document.getElementById(`lock-zone-${macId}`);
+      const resultZone = document.getElementById(`result-zone-${macId}`);
       
-      contentEl.innerHTML = `
-        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-center">
-          <p class="text-xs text-amber-400 animate-pulse font-semibold">🎬 Reklam Oynatılıyor... (Lütfen Bekleyin)</p>
+      lockZone.innerHTML = `
+        <div class="py-2 text-emerald-400 animate-pulse text-sm font-semibold">
+          ⏳ Reklam Onaylanıyor ve AI Tahmini Hazırlanıyor (3sn)...
         </div>
       `;
 
@@ -80,45 +128,26 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ macId })
           });
+          
           const data = await res.json();
 
           if (data.success) {
-            const t = data.tahmin;
-            contentEl.innerHTML = `
-              <div class="bg-slate-950 border border-emerald-500/40 rounded-xl p-4">
-                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
-                  <span class="text-xs text-emerald-400 font-bold">✅ AI Tahmini Açıldı</span>
-                  <span class="text-xs font-bold text-amber-400">Güven: ${t.guven}</span>
-                </div>
+            lockZone.classList.add('hidden');
+            resultZone.classList.remove('hidden');
 
-                <div class="grid grid-cols-3 gap-2 text-center my-3">
-                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
-                    <div class="text-[10px] text-slate-400">Maç Sonucu</div>
-                    <div class="text-sm font-extrabold text-emerald-400">${t.ms}</div>
-                  </div>
-                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
-                    <div class="text-[10px] text-slate-400">2.5 Alt/Üst</div>
-                    <div class="text-sm font-extrabold text-emerald-400">${t.alt_ust}</div>
-                  </div>
-                  <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
-                    <div class="text-[10px] text-slate-400">Skor Tahmini</div>
-                    <div class="text-sm font-extrabold text-amber-400">${t.skor_tahmini}</div>
-                  </div>
-                </div>
-
-                <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80">
-                  ${t.analiz}
-                </p>
-              </div>
-            `;
+            document.getElementById(`ms-${macId}`).innerText = data.tahmin.ms;
+            document.getElementById(`altust-${macId}`).innerText = data.tahmin.alt_ust;
+            document.getElementById(`skor-${macId}`).innerText = data.tahmin.skor_tahmini;
+            document.getElementById(`guven-${macId}`).innerText = data.tahmin.guven;
+            document.getElementById(`analiz-${macId}`).innerText = data.tahmin.analiz;
           }
         } catch (err) {
-          contentEl.innerHTML = `<p class="text-xs text-red-400 text-center">Hata oluştu. Tekrar deneyin.</p>`;
+          lockZone.innerHTML = `<span class="text-rose-400 text-sm">Hata oluştu. Tekrar deneyin.</span>`;
         }
       }, 3000);
     }
 
-    maclariYukle();
+    window.onload = maclariYukle;
   </script>
 </body>
 </html>
