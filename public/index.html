@@ -1,147 +1,79 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Süper Lig AI Tahmin & Analiz</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen font-sans pb-12">
-
-  <!-- Header -->
-  <header class="bg-slate-800 border-b border-slate-700 py-6 mb-8 shadow-lg">
-    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
-      <div>
-        <h1 class="text-2xl font-bold text-emerald-400 flex items-center gap-2">
-          ⚽ Süper Lig AI Tahmin
-        </h1>
-        <p class="text-xs text-slate-400 mt-1">Yapay Zeka Destekli Maç Analizleri ve İstatistikler</p>
-      </div>
-      <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-semibold">
-        7. Hafta Canlı
-      </span>
-    </div>
-  </header>
-
-  <!-- Container -->
-  <main class="max-w-4xl mx-auto px-4">
-    
-    <!-- Info Banner -->
-    <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-8 text-sm text-slate-300 flex items-center justify-between">
-      <span>💡 AI Tahminlerini açmak için <b>Tahmini Aç</b> butonuna tıklamanız yeterlidir.</span>
-    </div>
-
-    <!-- Match List -->
-    <div id="mac-listesi" class="space-y-6">
-      <div class="text-center py-12 text-slate-500">Maçlar yükleniyor...</div>
-    </div>
-
-  </main>
-
-  <script>
-    async function maclariYukle() {
-      try {
-        const response = await fetch('/api/maclar');
-        const maclar = await response.json();
-        
-        const container = document.getElementById('mac-listesi');
-        container.innerHTML = '';
-
-        maclar.forEach(mac => {
-          const card = document.createElement('div');
-          card.className = 'bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:border-slate-600 transition';
-          
-          card.innerHTML = `
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-              <div class="text-xs text-slate-400 bg-slate-900 px-3 py-1 rounded-full font-mono">
-                📅 ${mac.tarih}
-              </div>
-              <div class="flex items-center gap-6 text-lg font-bold">
-                <span class="text-slate-200">${mac.ev}</span>
-                <span class="text-xs text-emerald-400 bg-emerald-950/50 px-2 py-1 rounded border border-emerald-800">VS</span>
-                <span class="text-slate-200">${mac.dep}</span>
-              </div>
-              <div class="text-xs text-slate-400 font-mono">
-                Form: <span class="text-emerald-400">${mac.evForm}</span> / <span class="text-rose-400">${mac.depForm}</span>
-              </div>
-            </div>
-
-            <!-- Lock Section -->
-            <div id="lock-zone-${mac.id}" class="mt-4 border-t border-slate-700/50 pt-4 text-center">
-              <button onclick="tahminAc(${mac.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg flex items-center justify-center gap-2 transition active:scale-95">
-                <span>🔓 AI Tahminini Aç</span>
-              </button>
-            </div>
-
-            <!-- AI Result Section -->
-            <div id="result-zone-${mac.id}" class="hidden mt-4 border-t border-slate-700/50 pt-4 bg-slate-900/50 p-4 rounded-lg">
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-center">
-                <div class="bg-slate-800 p-2 rounded border border-slate-700">
-                  <div class="text-xs text-slate-400">Maç Sonucu</div>
-                  <div id="ms-${mac.id}" class="font-bold text-emerald-400 text-lg">-</div>
-                </div>
-                <div class="bg-slate-800 p-2 rounded border border-slate-700">
-                  <div class="text-xs text-slate-400">2.5 Alt/Üst</div>
-                  <div id="altust-${mac.id}" class="font-bold text-amber-400 text-lg">-</div>
-                </div>
-                <div class="bg-slate-800 p-2 rounded border border-slate-700">
-                  <div class="text-xs text-slate-400">Skor Tahmini</div>
-                  <div id="skor-${mac.id}" class="font-bold text-sky-400 text-lg">-</div>
-                </div>
-                <div class="bg-slate-800 p-2 rounded border border-slate-700">
-                  <div class="text-xs text-slate-400">Güven Oranı</div>
-                  <div id="guven-${mac.id}" class="font-bold text-purple-400 text-lg">-</div>
-                </div>
-              </div>
-              <div class="bg-slate-800/80 p-3 rounded border border-slate-700/60 text-sm text-slate-300">
-                <span class="text-xs text-emerald-400 font-semibold block mb-1">🤖 AI YAPAY ZEKA ANALİZİ</span>
-                <p id="analiz-${mac.id}">Analiz hazırlanıyor...</p>
-              </div>
-            </div>
-          `;
-          
-          container.appendChild(card);
-        });
-      } catch (err) {
-        console.error("Maçlar yüklenemedi:", err);
-      }
-    }
-
-    async function tahminAc(macId) {
-      const lockZone = document.getElementById(`lock-zone-${macId}`);
-      const resultZone = document.getElementById(`result-zone-${macId}`);
-      
-      lockZone.innerHTML = `
-        <div class="py-2 text-emerald-400 animate-pulse text-sm font-semibold">
-          ⏳ AI Tahmini Hazırlanıyor...
-        </div>
-      `;
-
-      try {
-        const res = await fetch('/api/tahmin-al', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ macId })
-        });
-        
-        const data = await res.json();
-
-        if (data.success) {
-          lockZone.classList.add('hidden');
-          resultZone.classList.remove('hidden');
-
-          document.getElementById(`ms-${macId}`).innerText = data.tahmin.ms;
-          document.getElementById(`altust-${macId}`).innerText = data.tahmin.alt_ust;
-          document.getElementById(`skor-${macId}`).innerText = data.tahmin.skor_tahmini;
-          document.getElementById(`guven-${macId}`).innerText = data.tahmin.guven;
-          document.getElementById(`analiz-${macId}`).innerText = data.tahmin.analiz;
-        }
-      } catch (err) {
-        lockZone.innerHTML = `<span class="text-rose-400 text-sm">Hata oluştu. Tekrar deneyin.</span>`;
-      }
-    }
-
-    window.onload = maclariYukle;
-  </script>
-</body>
-</html>
+<div class="superlig-program">
+  <h2>Trendyol Süper Lig 8. Hafta Maç Programı</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Tarih</th>
+        <th>Saat</th>
+        <th>Ev Sahibi</th>
+        <th>Deplasman</th>
+        <th>Stadyum</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>16.10.2026 Cuma</td>
+        <td>20:00</td>
+        <td><strong>Çorum FK</strong></td>
+        <td><strong>Çaykur Rizespor</strong></td>
+        <td>Çorum Şehir Stadyumu</td>
+      </tr>
+      <tr>
+        <td>17.10.2026 Cumartesi</td>
+        <td>13:30</td>
+        <td><strong>Erzurumspor FK</strong></td>
+        <td><strong>Eyüpspor</strong></td>
+        <td>Kazım Karabekir Stadyumu</td>
+      </tr>
+      <tr>
+        <td>17.10.2026 Cumartesi</td>
+        <td>16:00</td>
+        <td><strong>Gençlerbirliği</strong></td>
+        <td><strong>Galatasaray</strong></td>
+        <td>Eryaman Stadyumu</td>
+      </tr>
+      <tr>
+        <td>17.10.2026 Cumartesi</td>
+        <td>16:00</td>
+        <td><strong>Amed SK</strong></td>
+        <td><strong>Konyaspor</strong></td>
+        <td>Diyarbakır Stadyumu</td>
+      </tr>
+      <tr>
+        <td>17.10.2026 Cumartesi</td>
+        <td>19:00</td>
+        <td><strong>Fenerbahçe</strong></td>
+        <td><strong>Alanyaspor</strong></td>
+        <td>Chobani Stadyumu</td>
+      </tr>
+      <tr>
+        <td>18.10.2026 Pazar</td>
+        <td>13:30</td>
+        <td><strong>Kasımpaşa SK</strong></td>
+        <td><strong>Samsunspor</strong></td>
+        <td>Recep Tayyip Erdoğan Stadyumu</td>
+      </tr>
+      <tr>
+        <td>18.10.2026 Pazar</td>
+        <td>16:00</td>
+        <td><strong>Kocaelispor</strong></td>
+        <td><strong>Göztepe</strong></td>
+        <td>Yıldız Entegre Kocaeli Stadyumu</td>
+      </tr>
+      <tr>
+        <td>18.10.2026 Pazar</td>
+        <td>19:00</td>
+        <td><strong>Başakşehir FK</strong></td>
+        <td><strong>Gaziantep FK</strong></td>
+        <td>Başakşehir Fatih Terim Stadyumu</td>
+      </tr>
+      <tr class="derby-match">
+        <td>19.10.2026 Pazartesi</td>
+        <td>20:00</td>
+        <td><strong>Trabzonspor</strong></td>
+        <td><strong>Beşiktaş</strong></td>
+        <td>Papara Park (Haftanın Derbisi)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
