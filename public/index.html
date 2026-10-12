@@ -1,79 +1,184 @@
-<div class="superlig-program">
-  <h2>Trendyol Süper Lig 8. Hafta Maç Programı</h2>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Tarih</th>
-        <th>Saat</th>
-        <th>Ev Sahibi</th>
-        <th>Deplasman</th>
-        <th>Stadyum</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>16.10.2026 Cuma</td>
-        <td>20:00</td>
-        <td><strong>Çorum FK</strong></td>
-        <td><strong>Çaykur Rizespor</strong></td>
-        <td>Çorum Şehir Stadyumu</td>
-      </tr>
-      <tr>
-        <td>17.10.2026 Cumartesi</td>
-        <td>13:30</td>
-        <td><strong>Erzurumspor FK</strong></td>
-        <td><strong>Eyüpspor</strong></td>
-        <td>Kazım Karabekir Stadyumu</td>
-      </tr>
-      <tr>
-        <td>17.10.2026 Cumartesi</td>
-        <td>16:00</td>
-        <td><strong>Gençlerbirliği</strong></td>
-        <td><strong>Galatasaray</strong></td>
-        <td>Eryaman Stadyumu</td>
-      </tr>
-      <tr>
-        <td>17.10.2026 Cumartesi</td>
-        <td>16:00</td>
-        <td><strong>Amed SK</strong></td>
-        <td><strong>Konyaspor</strong></td>
-        <td>Diyarbakır Stadyumu</td>
-      </tr>
-      <tr>
-        <td>17.10.2026 Cumartesi</td>
-        <td>19:00</td>
-        <td><strong>Fenerbahçe</strong></td>
-        <td><strong>Alanyaspor</strong></td>
-        <td>Chobani Stadyumu</td>
-      </tr>
-      <tr>
-        <td>18.10.2026 Pazar</td>
-        <td>13:30</td>
-        <td><strong>Kasımpaşa SK</strong></td>
-        <td><strong>Samsunspor</strong></td>
-        <td>Recep Tayyip Erdoğan Stadyumu</td>
-      </tr>
-      <tr>
-        <td>18.10.2026 Pazar</td>
-        <td>16:00</td>
-        <td><strong>Kocaelispor</strong></td>
-        <td><strong>Göztepe</strong></td>
-        <td>Yıldız Entegre Kocaeli Stadyumu</td>
-      </tr>
-      <tr>
-        <td>18.10.2026 Pazar</td>
-        <td>19:00</td>
-        <td><strong>Başakşehir FK</strong></td>
-        <td><strong>Gaziantep FK</strong></td>
-        <td>Başakşehir Fatih Terim Stadyumu</td>
-      </tr>
-      <tr class="derby-match">
-        <td>19.10.2026 Pazartesi</td>
-        <td>20:00</td>
-        <td><strong>Trabzonspor</strong></td>
-        <td><strong>Beşiktaş</strong></td>
-        <td>Papara Park (Haftanın Derbisi)</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Süper Lig AI Prediction - 8. Hafta Programı</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      font-size: 2rem;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+    .table-container {
+      width: 100%;
+      max-width: 950px;
+      background-color: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    thead {
+      background-color: #0f172a;
+      border-bottom: 2px solid #334155;
+    }
+    th {
+      padding: 16px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #38bdf8;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #334155;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+    }
+    tbody tr:hover {
+      background-color: #334155;
+    }
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .derby-row {
+      background-color: rgba(239, 68, 68, 0.15) !important;
+    }
+    .derby-badge {
+      background-color: #ef4444;
+      color: #ffffff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-left: 8px;
+      display: inline-block;
+    }
+    @media (max-width: 640px) {
+      body {
+        padding: 15px 10px;
+      }
+      th, td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Trendyol Süper Lig 8. Hafta Maç Programı</h1>
+    <p>AI Yapay Zeka Maç Tahmin Sistemi</p>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Tarih</th>
+          <th>Saat</th>
+          <th>Ev Sahibi</th>
+          <th>Deplasman</th>
+          <th>Stadyum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>16.10.2026 Cuma</td>
+          <td>20:00</td>
+          <td><strong>Çorum FK</strong></td>
+          <td><strong>Çaykur Rizespor</strong></td>
+          <td>Çorum Şehir Stadyumu</td>
+        </tr>
+        <tr>
+          <td>17.10.2026 Cumartesi</td>
+          <td>13:30</td>
+          <td><strong>Erzurumspor FK</strong></td>
+          <td><strong>Eyüpspor</strong></td>
+          <td>Kazım Karabekir Stadyumu</td>
+        </tr>
+        <tr>
+          <td>17.10.2026 Cumartesi</td>
+          <td>16:00</td>
+          <td><strong>Gençlerbirliği</strong></td>
+          <td><strong>Galatasaray</strong></td>
+          <td>Eryaman Stadyumu</td>
+        </tr>
+        <tr>
+          <td>17.10.2026 Cumartesi</td>
+          <td>16:00</td>
+          <td><strong>Amed SK</strong></td>
+          <td><strong>Konyaspor</strong></td>
+          <td>Diyarbakır Stadyumu</td>
+        </tr>
+        <tr>
+          <td>17.10.2026 Cumartesi</td>
+          <td>19:00</td>
+          <td><strong>Fenerbahçe</strong></td>
+          <td><strong>Alanyaspor</strong></td>
+          <td>Chobani Stadyumu</td>
+        </tr>
+        <tr>
+          <td>18.10.2026 Pazar</td>
+          <td>13:30</td>
+          <td><strong>Kasımpaşa SK</strong></td>
+          <td><strong>Samsunspor</strong></td>
+          <td>Recep Tayyip Erdoğan Stadyumu</td>
+        </tr>
+        <tr>
+          <td>18.10.2026 Pazar</td>
+          <td>16:00</td>
+          <td><strong>Kocaelispor</strong></td>
+          <td><strong>Göztepe</strong></td>
+          <td>Yıldız Entegre Kocaeli Stadyumu</td>
+        </tr>
+        <tr>
+          <td>18.10.2026 Pazar</td>
+          <td>19:00</td>
+          <td><strong>Başakşehir FK</strong></td>
+          <td><strong>Gaziantep FK</strong></td>
+          <td>Başakşehir Fatih Terim Stadyumu</td>
+        </tr>
+        <tr class="derby-row">
+          <td>19.10.2026 Pazartesi</td>
+          <td>20:00</td>
+          <td><strong>Trabzonspor</strong></td>
+          <td><strong>Beşiktaş</strong></td>
+          <td>Papara Park <span class="derby-badge">DERBİ</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
