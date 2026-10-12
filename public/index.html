@@ -3,106 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Süper Lig AI Prediction - 8. Hafta Programı</title>
+  <title>Trendyol Süper Lig AI Tahmin & Analiz Portal</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .header h1 {
-      font-size: 2rem;
-      color: #38bdf8;
-      margin-bottom: 8px;
-    }
-    .header p {
-      color: #94a3b8;
-      font-size: 1rem;
-    }
-    .table-container {
-      width: 100%;
-      max-width: 950px;
-      background-color: #1e293b;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      border: 1px solid #334155;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-    thead {
-      background-color: #0f172a;
-      border-bottom: 2px solid #334155;
-    }
-    th {
-      padding: 16px;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #38bdf8;
-    }
-    td {
-      padding: 14px 16px;
-      border-bottom: 1px solid #334155;
-      font-size: 0.95rem;
-      color: #e2e8f0;
-    }
-    tbody tr:hover {
-      background-color: #334155;
-    }
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
-    .derby-row {
-      background-color: rgba(239, 68, 68, 0.15) !important;
-    }
-    .derby-badge {
-      background-color: #ef4444;
-      color: #ffffff;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      margin-left: 8px;
-      display: inline-block;
-    }
-    @media (max-width: 640px) {
-      body {
-        padding: 15px 10px;
-      }
-      th, td {
-        padding: 10px 8px;
-        font-size: 0.85rem;
-      }
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; }
+    .header { text-align: center; margin-bottom: 25px; }
+    .header h1 { font-size: 2rem; color: #38bdf8; margin-bottom: 6px; }
+    .header p { color: #94a3b8; font-size: 0.95rem; }
+    .controls-bar { width: 100%; max-width: 950px; display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+    .search-input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155; background-color: #1e293b; color: #f8fafc; outline: none; }
+    .search-input:focus { border-color: #38bdf8; }
+    .table-container { width: 100%; max-width: 950px; background-color: #1e293b; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); overflow: hidden; border: 1px solid #334155; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    thead { background-color: #0f172a; border-bottom: 2px solid #334155; }
+    th { padding: 14px 16px; font-size: 0.85rem; text-transform: uppercase; color: #38bdf8; }
+    td { padding: 14px 16px; border-bottom: 1px solid #334155; font-size: 0.9rem; color: #e2e8f0; }
+    tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
+    tbody tr:hover { background-color: #334155; }
+    .derby-row { background-color: rgba(239, 68, 68, 0.12) !important; }
+    .derby-badge { background-color: #ef4444; color: #ffffff; padding: 2px 7px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; margin-left: 6px; }
+    .action-btn { background-color: #0284c7; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; display: inline-block; }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; backdrop-filter: blur(4px); }
+    .modal-card { background-color: #1e293b; border: 1px solid #38bdf8; border-radius: 16px; width: 100%; max-width: 650px; padding: 24px; box-shadow: 0 20px 30px rgba(0,0,0,0.6); position: relative; max-height: 90vh; overflow-y: auto; }
+    .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
+    .close-btn:hover { color: #fff; }
+    .match-header-card { display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px; background: #0f172a; padding: 15px; border-radius: 12px; }
+    .team-box { text-align: center; flex: 1; }
+    .team-name { font-size: 1.1rem; font-weight: bold; color: #f8fafc; }
+    .score-pred { font-size: 1.8rem; font-weight: 800; color: #38bdf8; padding: 0 10px; }
+    .prob-bar-container { margin: 15px 0; }
+    .prob-title { font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
+    .prob-bar { display: flex; height: 20px; border-radius: 10px; overflow: hidden; background-color: #334155; }
+    .prob-home { background-color: #10b981; }
+    .prob-draw { background-color: #f59e0b; }
+    .prob-away { background-color: #3b82f6; }
+    .prob-legend { display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 6px; }
+    .analysis-text { background-color: #0f172a; padding: 14px; border-radius: 10px; font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; margin-top: 15px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+    .stat-card { background: #0f172a; padding: 10px; border-radius: 8px; text-align: center; }
+    .stat-val { font-size: 1.1rem; font-weight: bold; color: #38bdf8; }
+    .stat-lbl { font-size: 0.75rem; color: #94a3b8; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1>Trendyol Süper Lig 8. Hafta Maç Programı</h1>
-    <p>AI Yapay Zeka Maç Tahmin Sistemi</p>
+    <h1>Trendyol Süper Lig 8. Hafta Tahminleri</h1>
+    <p>🤖 Yapay Zeka Taktik, İstatistik & Skor Analizi (Detay için maça tıklayın)</p>
+  </div>
+
+  <div class="controls-bar">
+    <input type="text" id="searchInput" class="search-input" placeholder="Takım ismi ile ara..." onkeyup="filterTable()">
   </div>
 
   <div class="table-container">
-    <table>
+    <table id="matchTable">
       <thead>
         <tr>
           <th>Tarih</th>
@@ -110,75 +65,90 @@
           <th>Ev Sahibi</th>
           <th>Deplasman</th>
           <th>Stadyum</th>
+          <th>AI Analiz</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>16.10.2026 Cuma</td>
-          <td>20:00</td>
-          <td><strong>Çorum FK</strong></td>
-          <td><strong>Çaykur Rizespor</strong></td>
-          <td>Çorum Şehir Stadyumu</td>
-        </tr>
-        <tr>
-          <td>17.10.2026 Cumartesi</td>
-          <td>13:30</td>
-          <td><strong>Erzurumspor FK</strong></td>
-          <td><strong>Eyüpspor</strong></td>
-          <td>Kazım Karabekir Stadyumu</td>
-        </tr>
-        <tr>
-          <td>17.10.2026 Cumartesi</td>
-          <td>16:00</td>
-          <td><strong>Gençlerbirliği</strong></td>
-          <td><strong>Galatasaray</strong></td>
-          <td>Eryaman Stadyumu</td>
-        </tr>
-        <tr>
-          <td>17.10.2026 Cumartesi</td>
-          <td>16:00</td>
-          <td><strong>Amed SK</strong></td>
-          <td><strong>Konyaspor</strong></td>
-          <td>Diyarbakır Stadyumu</td>
-        </tr>
-        <tr>
-          <td>17.10.2026 Cumartesi</td>
-          <td>19:00</td>
-          <td><strong>Fenerbahçe</strong></td>
-          <td><strong>Alanyaspor</strong></td>
-          <td>Chobani Stadyumu</td>
-        </tr>
-        <tr>
-          <td>18.10.2026 Pazar</td>
-          <td>13:30</td>
-          <td><strong>Kasımpaşa SK</strong></td>
-          <td><strong>Samsunspor</strong></td>
-          <td>Recep Tayyip Erdoğan Stadyumu</td>
-        </tr>
-        <tr>
-          <td>18.10.2026 Pazar</td>
-          <td>16:00</td>
-          <td><strong>Kocaelispor</strong></td>
-          <td><strong>Göztepe</strong></td>
-          <td>Yıldız Entegre Kocaeli Stadyumu</td>
-        </tr>
-        <tr>
-          <td>18.10.2026 Pazar</td>
-          <td>19:00</td>
-          <td><strong>Başakşehir FK</strong></td>
-          <td><strong>Gaziantep FK</strong></td>
-          <td>Başakşehir Fatih Terim Stadyumu</td>
-        </tr>
-        <tr class="derby-row">
-          <td>19.10.2026 Pazartesi</td>
-          <td>20:00</td>
-          <td><strong>Trabzonspor</strong></td>
-          <td><strong>Beşiktaş</strong></td>
-          <td>Papara Park <span class="derby-badge">DERBİ</span></td>
-        </tr>
-      </tbody>
+      <tbody id="tableBody"></tbody>
     </table>
   </div>
 
+  <div class="modal-overlay" id="matchModal">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const matches = [
+      { id: 1, date: '16.10.2026 Cuma', time: '20:00', home: 'Çorum FK', away: 'Çaykur Rizespor', stadium: 'Çorum Şehir Stadyumu', predScore: '1 - 1', probHome: 32, probDraw: 38, probAway: 30, comment: 'Çorum FK evinde dirençli bir futbol sergiliyor. Rizesporun hızlı kanat hücumlarına karşı ortasaha direncini artırması bekleniyor.', homeXg: '1.10', awayXg: '1.15', bestPick: 'KG Var / 2.5 Alt' },
+      { id: 2, date: '17.10.2026 Cumartesi', time: '13:30', home: 'Erzurumspor FK', away: 'Eyüpspor', stadium: 'Kazım Karabekir Stadyumu', predScore: '1 - 2', probHome: 25, probDraw: 30, probAway: 45, comment: 'Yüksek rakım avantajına sahip Erzurum deplasmanında Eyüpsporun topa sahip olma oranı belirleyici olacak.', homeXg: '0.95', awayXg: '1.65', bestPick: 'Maç Sonucu 2' },
+      { id: 3, date: '17.10.2026 Cumartesi', time: '16:00', home: 'Gençlerbirliği', away: 'Galatasaray', stadium: 'Eryaman Stadyumu', predScore: '0 - 3', probHome: 12, probDraw: 20, probAway: 68, comment: 'Galatasaray lige yüksek tempolu hücum organizasyonlarıyla devam ediyor.', homeXg: '0.50', awayXg: '2.40', bestPick: 'MS 2 & 2.5 Üst' },
+      { id: 4, date: '17.10.2026 Cumartesi', time: '16:00', home: 'Amed SK', away: 'Konyaspor', stadium: 'Diyarbakır Stadyumu', predScore: '2 - 1', probHome: 48, probDraw: 28, probAway: 24, comment: 'Amed SK taraftar desteğiyle iç sahada son derece baskılı bir oyun tercih ediyor.', homeXg: '1.75', awayXg: '1.05', bestPick: 'Maç Sonucu 1' },
+      { id: 5, date: '17.10.2026 Cumartesi', time: '19:00', home: 'Fenerbahçe', away: 'Alanyaspor', stadium: 'Chobani Stadyumu', predScore: '3 - 1', probHome: 70, probDraw: 18, probAway: 12, comment: 'Fenerbahçe iç sahada ilk 15 dakikalık şok baskısıyla biliniyor.', homeXg: '2.60', awayXg: '0.80', bestPick: 'MS 1 & 1.5 Üst' },
+      { id: 6, date: '18.10.2026 Pazar', time: '13:30', home: 'Kasımpaşa SK', away: 'Samsunspor', stadium: 'Recep Tayyip Erdoğan Stadyumu', predScore: '2 - 2', probHome: 36, probDraw: 35, probAway: 29, comment: 'Açık alanda oynayan iki takımın mücadelesinde yüksek pozisyon üretimi beklenmektedir.', homeXg: '1.50', awayXg: '1.45', bestPick: 'KG Var / 2.5 Üst' },
+      { id: 7, date: '18.10.2026 Pazar', time: '16:00', home: 'Kocaelispor', away: 'Göztepe', stadium: 'Yıldız Entegre Kocaeli Stadyumu', predScore: '1 - 0', probHome: 42, probDraw: 33, probAway: 25, comment: 'Marmara ve Ege ekibinin taktik savaşında fiziksel mücadele ön planda olacaktır.', homeXg: '1.20', awayXg: '0.90', bestPick: '1X Çifte Şans' },
+      { id: 8, date: '18.10.2026 Pazar', time: '19:00', home: 'Başakşehir FK', away: 'Gaziantep FK', stadium: 'Başakşehir Fatih Terim Stadyumu', predScore: '2 - 0', probHome: 58, probDraw: 26, probAway: 16, comment: 'Başakşehir seti iyi oynayan ve pas trafiğini yöneten taraf.', homeXg: '1.90', awayXg: '0.60', bestPick: 'Maç Sonucu 1' },
+      { id: 9, date: '19.10.2026 Pazartesi', time: '20:00', home: 'Trabzonspor', away: 'Beşiktaş', stadium: 'Papara Park', isDerby: true, predScore: '2 - 2', probHome: 36, probDraw: 34, probAway: 30, comment: 'Haftanın derbi mücadelesinde Papara Park ta yüksek tansiyonlu bir maç bekleniyor.', homeXg: '1.85', awayXg: '1.70', bestPick: 'Karşılıklı Gol Var' }
+    ];
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      data.forEach(m => {
+        const tr = document.createElement('tr');
+        if(m.isDerby) tr.classList.add('derby-row');
+        tr.onclick = () => openModal(m.id);
+        tr.innerHTML = `
+          <td>${m.date}</td>
+          <td>${m.time}</td>
+          <td><strong>${m.home}</strong></td>
+          <td><strong>${m.away}</strong></td>
+          <td>${m.stadium} ${m.isDerby ? '<span class="derby-badge">DERBİ</span>' : ''}</td>
+          <td><span class="action-btn">Analiz İncele</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openModal(id) {
+      const match = matches.find(m => m.id === id);
+      if(!match) return;
+      document.getElementById('modalContent').innerHTML = `
+        <div class="match-header-card">
+          <div class="team-box"><div class="team-name">${match.home}</div><div style="font-size:0.75rem; color:#94a3b8;">Ev Sahibi</div></div>
+          <div class="score-pred">${match.predScore}</div>
+          <div class="team-box"><div class="team-name">${match.away}</div><div style="font-size:0.75rem; color:#94a3b8;">Deplasman</div></div>
+        </div>
+        <div class="prob-bar-container">
+          <div class="prob-title">AI Olasılık Tahmini (%)</div>
+          <div class="prob-bar">
+            <div class="prob-home" style="width: ${match.probHome}%"></div>
+            <div class="prob-draw" style="width: ${match.probDraw}%"></div>
+            <div class="prob-away" style="width: ${match.probAway}%"></div>
+          </div>
+          <div class="prob-legend">
+            <span style="color:#10b981;">1 (${match.probHome}%)</span>
+            <span style="color:#f59e0b;">X (${match.probDraw}%)</span>
+            <span style="color:#3b82f6;">2 (${match.probAway}%)</span>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-val">${match.homeXg} - ${match.awayXg}</div><div class="stat-lbl">Beklenen Gol (xG)</div></div>
+          <div class="stat-card"><div class="stat-val">${match.bestPick}</div><div class="stat-lbl">Önerilen AI Bahis Tercihi</div></div>
+        </div>
+        <div class="analysis-text"><strong style="color:#38bdf8;">🧠 Yapay Zeka Taktiksel Yorumu:</strong><br/>${match.comment}</div>
+      `;
+      document.getElementById('matchModal').style.display = 'flex';
+    }
+
+    function closeModal() { document.getElementById('matchModal').style.display = 'none'; }
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      renderTable(matches.filter(m => m.home.toLowerCase().includes(q) || m.away.toLowerCase().includes(q)));
+    }
+    window.onclick = function(e) { if (e.target === document.getElementById('matchModal')) closeModal(); }
+    renderTable(matches);
+  </script>
 </body>
 </html>
