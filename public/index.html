@@ -30,17 +30,30 @@
     .controls-bar { width: 100%; max-width: 950px; display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
     .search-input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155; background-color: #1e293b; color: #f8fafc; outline: none; }
     .search-input:focus { border-color: #38bdf8; }
-    .table-container { width: 100%; max-width: 950px; background-color: #1e293b; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); overflow: hidden; border: 1px solid #334155; }
-    table { width: 100%; border-collapse: collapse; text-align: left; }
+
+    /* MOBİL YANA KAYDIRMA (HORIZONTAL SCROLL) AYARLARI */
+    .table-container { 
+      width: 100%; 
+      max-width: 950px; 
+      background-color: #1e293b; 
+      border-radius: 12px; 
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); 
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid #334155; 
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; min-width: 750px; }
     thead { background-color: #0f172a; border-bottom: 2px solid #334155; }
-    th { padding: 14px 16px; font-size: 0.85rem; text-transform: uppercase; color: #38bdf8; }
-    td { padding: 14px 16px; border-bottom: 1px solid #334155; font-size: 0.9rem; color: #e2e8f0; }
+    th { padding: 14px 16px; font-size: 0.85rem; text-transform: uppercase; color: #38bdf8; white-space: nowrap; }
+    td { padding: 14px 16px; border-bottom: 1px solid #334155; font-size: 0.9rem; color: #e2e8f0; white-space: nowrap; }
     tbody tr { cursor: pointer; transition: background-color 0.2s ease; }
     tbody tr:hover { background-color: #334155; }
     .derby-row { background-color: rgba(239, 68, 68, 0.12) !important; }
     .derby-badge { background-color: #ef4444; color: #ffffff; padding: 2px 7px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; margin-left: 6px; }
     .league-badge { background-color: #334155; color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; }
     .action-btn { background-color: #0284c7; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; display: inline-block; }
+
+    /* MODAL */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; backdrop-filter: blur(4px); }
     .modal-card { background-color: #1e293b; border: 1px solid #38bdf8; border-radius: 16px; width: 100%; max-width: 650px; padding: 24px; box-shadow: 0 20px 30px rgba(0,0,0,0.6); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
@@ -150,7 +163,7 @@
           <td><span class="league-badge">${m.league}</span></td>
           <td><strong>${m.home}</strong></td>
           <td><strong>${m.away}</strong></td>
-          <td>${m.stadium} ${m.isDerby ? '<span class="derby-badge">KRİTİK / DERBİ</span>' : ''}</td>
+          <td>${m.stadium}${m.isDerby ? '<span class="derby-badge">KRİTİK / DERBİ</span>' : ''}</td>
           <td><span class="action-btn">Analiz İncele</span></td>
         `;
         tbody.appendChild(tr);
@@ -162,44 +175,3 @@
       if(!match) return;
       document.getElementById('modalContent').innerHTML = `
         <div style="text-align:center; margin-bottom:10px;"><span class="league-badge" style="font-size:0.85rem;">${match.league}</span></div>
-        <div class="match-header-card">
-          <div class="team-box"><div class="team-name">${match.home}</div><div style="font-size:0.75rem; color:#94a3b8;">Ev Sahibi</div></div>
-          <div class="score-pred">${match.predScore}</div>
-          <div class="team-box"><div class="team-name">${match.away}</div><div style="font-size:0.75rem; color:#94a3b8;">Deplasman</div></div>
-        </div>
-        <div class="prob-bar-container">
-          <div class="prob-title">AI Olasılık Tahmini (%)</div>
-          <div class="prob-bar">
-            <div class="prob-home" style="width: ${match.probHome}%"></div>
-            <div class="prob-draw" style="width: ${match.probDraw}%"></div>
-            <div class="prob-away" style="width: ${match.probAway}%"></div>
-          </div>
-          <div class="prob-legend">
-            <span style="color:#10b981;">1 (${match.probHome}%)</span>
-            <span style="color:#f59e0b;">X (${match.probDraw}%)</span>
-            <span style="color:#3b82f6;">2 (${match.probAway}%)</span>
-          </div>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-val">${match.homeXg} - ${match.awayXg}</div><div class="stat-lbl">Beklenen Gol (xG)</div></div>
-          <div class="stat-card"><div class="stat-val">${match.bestPick}</div><div class="stat-lbl">Önerilen AI Bahis Tercihi</div></div>
-        </div>
-        <div class="analysis-text"><strong style="color:#38bdf8;">🧠 Yapay Zeka Taktiksel Yorumu:</strong><br/>${match.comment}</div>
-      `;
-      document.getElementById('matchModal').style.display = 'flex';
-    }
-
-    function closeModal() { document.getElementById('matchModal').style.display = 'none'; }
-    function filterTable() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      renderTable(matches.filter(m => 
-        m.home.toLowerCase().includes(q) || 
-        m.away.toLowerCase().includes(q) || 
-        m.league.toLowerCase().includes(q)
-      ));
-    }
-    window.onclick = function(e) { if (e.target === document.getElementById('matchModal')) closeModal(); }
-    renderTable(matches);
-  </script>
-</body>
-</html>
