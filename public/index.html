@@ -23,7 +23,7 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; }
     .header { text-align: center; margin-bottom: 25px; }
     .header h1 { font-size: 2rem; color: #38bdf8; margin-bottom: 6px; }
     .header p { color: #94a3b8; font-size: 0.95rem; }
@@ -97,3 +97,109 @@
       <div id="modalContent"></div>
     </div>
   </div>
+
+  <script>
+    const matches = [
+      // SÜPER LİG
+      { id: 1, league: "Süper Lig", date: "16.10.2026 Cuma", time: "20:00", home: "Çorum FK", away: "Çaykur Rizespor", stadium: "Çorum Şehir Stadyumu", predScore: "1 - 1", probHome: 32, probDraw: 38, probAway: 30, comment: "Çorum FK evinde dirençli bir futbol sergiliyor. Rizesporun hızlı kanat hücumlarına karşı ortasaha direncini artırması bekleniyor.", homeXg: "1.10", awayXg: "1.15", bestPick: "KG Var / 2.5 Alt" },
+      { id: 2, league: "Süper Lig", date: "17.10.2026 Cumartesi", time: "13:30", home: "Erzurumspor FK", away: "Eyüpspor", stadium: "Kazım Karabekir Stadyumu", predScore: "1 - 2", probHome: 25, probDraw: 30, probAway: 45, comment: "Yüksek rakım avantajına sahip Erzurum deplasmanında Eyüpsporun topa sahip olma oranı belirleyici olacak.", homeXg: "0.95", awayXg: "1.65", bestPick: "Maç Sonucu 2" },
+      { id: 3, league: "Süper Lig", date: "17.10.2026 Cumartesi", time: "16:00", home: "Gençlerbirliği", away: "Galatasaray", stadium: "Eryaman Stadyumu", predScore: "0 - 3", probHome: 12, probDraw: 20, probAway: 68, comment: "Galatasaray lige yüksek tempolu hücum organizasyonlarıyla devam ediyor.", homeXg: "0.50", awayXg: "2.40", bestPick: "MS 2 & 2.5 Üst" },
+      { id: 4, league: "Süper Lig", date: "17.10.2026 Cumartesi", time: "16:00", home: "Amed SK", away: "Konyaspor", stadium: "Diyarbakır Stadyumu", predScore: "2 - 1", probHome: 48, probDraw: 28, probAway: 24, comment: "Amed SK taraftar desteğiyle iç sahada son derece baskılı bir oyun tercih ediyor.", homeXg: "1.75", awayXg: "1.05", bestPick: "Maç Sonucu 1" },
+      { id: 5, league: "Süper Lig", date: "17.10.2026 Cumartesi", time: "19:00", home: "Fenerbahçe", away: "Alanyaspor", stadium: "Chobani Stadyumu", predScore: "3 - 1", probHome: 70, probDraw: 18, probAway: 12, comment: "Fenerbahçe iç sahada ilk 15 dakikalık şok baskısıyla biliniyor.", homeXg: "2.60", awayXg: "0.80", bestPick: "MS 1 & 1.5 Üst" },
+      { id: 6, league: "Süper Lig", date: "18.10.2026 Pazar", time: "13:30", home: "Kasımpaşa SK", away: "Samsunspor", stadium: "Recep Tayyip Erdoğan Stadyumu", predScore: "2 - 2", probHome: 36, probDraw: 35, probAway: 29, comment: "Açık alanda oynayan iki takımın mücadelesinde yüksek pozisyon üretimi beklenmektedir.", homeXg: "1.50", awayXg: "1.45", bestPick: "KG Var / 2.5 Üst" },
+      { id: 7, league: "Süper Lig", date: "18.10.2026 Pazar", time: "16:00", home: "Kocaelispor", away: "Göztepe", stadium: "Yıldız Entegre Kocaeli Stadyumu", predScore: "1 - 0", probHome: 42, probDraw: 33, probAway: 25, comment: "Marmara ve Ege ekibinin taktik savaşında fiziksel mücadele ön planda olacaktır.", homeXg: "1.20", awayXg: "0.90", bestPick: "1X Çifte Şans" },
+      { id: 8, league: "Süper Lig", date: "18.10.2026 Pazar", time: "19:00", home: "Başakşehir FK", away: "Gaziantep FK", stadium: "Başakşehir Fatih Terim Stadyumu", predScore: "2 - 0", probHome: 58, probDraw: 26, probAway: 16, comment: "Başakşehir seti iyi oynayan ve pas trafiğini yöneten taraf.", homeXg: "1.90", awayXg: "0.60", bestPick: "Maç Sonucu 1" },
+      { id: 9, league: "Süper Lig", date: "19.10.2026 Pazartesi", time: "20:00", home: "Trabzonspor", away: "Beşiktaş", stadium: "Papara Park", isDerby: true, predScore: "2 - 2", probHome: 36, probDraw: 34, probAway: 30, comment: "Haftanın derbi mücadelesinde Papara Park ta yüksek tansiyonlu bir maç bekleniyor.", homeXg: "1.85", awayXg: "1.70", bestPick: "Karşılıklı Gol Var" },
+
+      // İTALYA - SERIE A
+      { id: 10, league: "Serie A", date: "17.10.2026 Cumartesi", time: "19:00", home: "Bologna", away: "Inter Milan", stadium: "Renato Dall Ara", predScore: "0 - 2", probHome: 20, probDraw: 28, probAway: 52, comment: "Inter orta sahada pas üstünlüğünü elinde tutarak deplasmanda sonuca gitmeye yakın.", homeXg: "0.70", awayXg: "1.90", bestPick: "Maç Sonucu 2" },
+      { id: 11, league: "Serie A", date: "18.10.2026 Pazar", time: "19:00", home: "AC Milan", away: "Atalanta", stadium: "San Siro", predScore: "2 - 1", probHome: 45, probDraw: 30, probAway: 25, comment: "San Siro atmosferinde Milan kanat akınlarıyla Atalanta savunmasını zorlayacaktır.", homeXg: "1.60", awayXg: "1.20", bestPick: "KG Var" },
+      { id: 12, league: "Serie A", date: "18.10.2026 Pazar", time: "21:45", home: "Juventus", away: "SS Lazio", stadium: "Juventus Stadyumu", isDerby: true, predScore: "1 - 0", probHome: 50, probDraw: 32, probAway: 18, comment: "Juve evinde sağlam savunma disipliniyle Lazio akınlarını kesip tek golle kazanabilir.", homeXg: "1.30", awayXg: "0.65", bestPick: "MS 1 & 2.5 Alt" },
+
+      // İSPANYA - LA LIGA
+      { id: 13, league: "La Liga", date: "17.10.2026 Cumartesi", time: "19:30", home: "Real Betis", away: "Barcelona", stadium: "Sevilla Olimpiyat Stadyumu", predScore: "1 - 3", probHome: 18, probDraw: 22, probAway: 60, comment: "Barca yüksek ön alan baskısı ve xG üretkenliği ile gollü bir galibiyet alabilir.", homeXg: "0.90", awayXg: "2.50", bestPick: "MS 2 & 2.5 Üst" },
+      { id: 14, league: "La Liga", date: "18.10.2026 Pazar", time: "22:00", home: "Real Madrid", away: "Sevilla", stadium: "Santiago Bernabéu", predScore: "3 - 0", probHome: 72, probDraw: 18, probAway: 10, comment: "Bernabeuda Real Madrid temposuna karşılık vermek Sevilla için oldukça güç görünüyor.", homeXg: "2.80", awayXg: "0.40", bestPick: "Handikaplı MS 1" },
+      { id: 15, league: "La Liga", date: "25.10.2026 Pazar", time: "23:00", home: "Barcelona", away: "Real Madrid", stadium: "Camp Nou", isDerby: true, predScore: "2 - 2", probHome: 38, probDraw: 32, probAway: 30, comment: "Dünyanın gözünün çevrileceği El Clasico mücadelesinde taraf bahsi yerine gollere yönelmek mantıklı.", homeXg: "1.95", awayXg: "1.85", bestPick: "KG Var & 2.5 Üst" },
+
+      // ALMANYA - BUNDESLIGA
+      { id: 16, league: "Bundesliga", date: "17.10.2026 Cumartesi", time: "19:30", home: "Bayern Münih", away: "RB Leipzig", stadium: "Allianz Arena", predScore: "3 - 1", probHome: 65, probDraw: 20, probAway: 15, comment: "Bayern Allianz Arenada tempolu başlayıp erken skor bularak maçı koparmaya yakın.", homeXg: "2.70", awayXg: "1.10", bestPick: "MS 1 & 2.5 Üst" },
+      { id: 17, league: "Bundesliga", date: "24.10.2026 Cumartesi", time: "19:30", home: "Borussia Dortmund", away: "Eintracht Frankfurt", stadium: "Signal Iduna Park", predScore: "2 - 1", probHome: 52, probDraw: 28, probAway: 20, comment: "Sarı Duvar önünde Dortmund hücumda üretken ama savunmada geçiş gollere açık.", homeXg: "1.80", awayXg: "1.30", bestPick: "KG Var" },
+      { id: 18, league: "Bundesliga", date: "31.10.2026 Cumartesi", time: "20:30", home: "Bayern Münih", away: "Borussia Dortmund", stadium: "Allianz Arena", isDerby: true, predScore: "3 - 2", probHome: 58, probDraw: 22, probAway: 20, comment: "Der Klassikede yüksek xG beklentisi mevcut. İki takımın da skor üretmesi kaçınılmaz.", homeXg: "2.90", awayXg: "1.80", bestPick: "3.5 Üst" },
+
+      // İNGİLTERE - PREMIER LEAGUE
+      { id: 19, league: "Premier League", date: "17.10.2026 Cumartesi", time: "17:00", home: "Manchester City", away: "Ipswich Town", stadium: "Etihad Stadium", predScore: "4 - 0", probHome: 85, probDraw: 10, probAway: 5, comment: "City Etihad stadyumunda topa hakimiyet oranını yüzde 70 in üzerine çıkarıp rahat bir galibiyet alacaktır.", homeXg: "3.20", awayXg: "0.30", bestPick: "Handikaplı MS 1" },
+      { id: 20, league: "Premier League", date: "18.10.2026 Pazar", time: "18:30", home: "Nottingham Forest", away: "Arsenal", stadium: "City Ground", predScore: "0 - 2", probHome: 15, probDraw: 25, probAway: 60, comment: "Arsenalin duran top organizasyonları ve disiplinli yapısı zorlu deplasmanda kilidi açacaktır.", homeXg: "0.60", awayXg: "1.85", bestPick: "Maç Sonucu 2" },
+      { id: 21, league: "Premier League", date: "24.10.2026 Cumartesi", time: "19:30", home: "Chelsea", away: "Tottenham Hotspur", stadium: "Stamford Bridge", isDerby: true, predScore: "2 - 1", probHome: 44, probDraw: 31, probAway: 25, comment: "Londra derbisinde Stamford Bridge ev sahibine küçük bir avantaj sağlıyor.", homeXg: "1.65", awayXg: "1.35", bestPick: "KG Var" },
+
+      // PORTEKİZ - LIGA PORTUGAL
+      { id: 22, league: "Liga Portugal", date: "24.10.2026 Cumartesi", time: "22:30", home: "Gil Vicente", away: "FC Porto", stadium: "Estádio Cidade de Barcelos", predScore: "0 - 2", probHome: 14, probDraw: 24, probAway: 62, comment: "Porto zorlu dış saha maçında kalitesini konuşturup kalesini gole kapatarak kazanır.", homeXg: "0.45", awayXg: "1.95", bestPick: "MS 2" },
+      { id: 23, league: "Liga Portugal", date: "25.10.2026 Pazar", time: "23:30", home: "Sporting CP", away: "Académico Viseu", stadium: "Estádio José Alvalade", predScore: "3 - 0", probHome: 78, probDraw: 15, probAway: 7, comment: "Sporting Alvaladede maça çok hızlı başlayarak ilk yarıdan skoru yakalayacaktır.", homeXg: "2.80", awayXg: "0.30", bestPick: "İY 1 & MS 1" },
+      { id: 24, league: "Liga Portugal", date: "26.10.2026 Pazartesi", time: "21:45", home: "CD Santa Clara", away: "Benfica", stadium: "Estadio de São Miguel", predScore: "1 - 2", probHome: 22, probDraw: 28, probAway: 50, comment: "Ada deplasmanı Benfica için fiziksel açıdan yıpratıcı geçse de bitiricilik farkı galibiyeti getirir.", homeXg: "0.85", awayXg: "1.75", bestPick: "Maç Sonucu 2" }
+    ];
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      data.forEach(m => {
+        const tr = document.createElement('tr');
+        if(m.isDerby) tr.classList.add('derby-row');
+        tr.onclick = () => openModal(m.id);
+        tr.innerHTML = `
+          <td>${m.date}</td>
+          <td>${m.time}</td>
+          <td><span class="league-badge">${m.league}</span></td>
+          <td><strong>${m.home}</strong></td>
+          <td><strong>${m.away}</strong></td>
+          <td>${m.stadium} ${m.isDerby ? '<span class="derby-badge">KRİTİK / DERBİ</span>' : ''}</td>
+          <td><span class="action-btn">Analiz İncele</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openModal(id) {
+      const match = matches.find(m => m.id === id);
+      if(!match) return;
+      document.getElementById('modalContent').innerHTML = `
+        <div style="text-align:center; margin-bottom:10px;"><span class="league-badge" style="font-size:0.85rem;">${match.league}</span></div>
+        <div class="match-header-card">
+          <div class="team-box"><div class="team-name">${match.home}</div><div style="font-size:0.75rem; color:#94a3b8;">Ev Sahibi</div></div>
+          <div class="score-pred">${match.predScore}</div>
+          <div class="team-box"><div class="team-name">${match.away}</div><div style="font-size:0.75rem; color:#94a3b8;">Deplasman</div></div>
+        </div>
+        <div class="prob-bar-container">
+          <div class="prob-title">AI Olasılık Tahmini (%)</div>
+          <div class="prob-bar">
+            <div class="prob-home" style="width: ${match.probHome}%"></div>
+            <div class="prob-draw" style="width: ${match.probDraw}%"></div>
+            <div class="prob-away" style="width: ${match.probAway}%"></div>
+          </div>
+          <div class="prob-legend">
+            <span style="color:#10b981;">1 (${match.probHome}%)</span>
+            <span style="color:#f59e0b;">X (${match.probDraw}%)</span>
+            <span style="color:#3b82f6;">2 (${match.probAway}%)</span>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-val">${match.homeXg} - ${match.awayXg}</div><div class="stat-lbl">Beklenen Gol (xG)</div></div>
+          <div class="stat-card"><div class="stat-val">${match.bestPick}</div><div class="stat-lbl">Önerilen AI Bahis Tercihi</div></div>
+        </div>
+        <div class="analysis-text"><strong style="color:#38bdf8;">🧠 Yapay Zeka Taktiksel Yorumu:</strong><br/>${match.comment}</div>
+      `;
+      document.getElementById('matchModal').style.display = 'flex';
+    }
+
+    function closeModal() { document.getElementById('matchModal').style.display = 'none'; }
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      renderTable(matches.filter(m => 
+        m.home.toLowerCase().includes(q) || 
+        m.away.toLowerCase().includes(q) || 
+        m.league.toLowerCase().includes(q)
+      ));
+    }
+    window.onclick = function(e) { if (e.target === document.getElementById('matchModal')) closeModal(); }
+    renderTable(matches);
+  </script>
+</body>
+</html>
