@@ -54,12 +54,12 @@
     .league-badge { background-color: #334155; color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; }
     .action-btn { background-color: #0284c7; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; display: inline-block; }
 
-    /* PUAN DURUMU BÖLÜMÜ STİLLERİ */
+    /* PUAN DURUMU STİLLERİ */
     .section-title { width: 100%; max-width: 950px; text-align: left; font-size: 1.3rem; color: #38bdf8; margin-bottom: 15px; border-left: 4px solid #38bdf8; padding-left: 10px; }
     .standings-table { min-width: 600px; }
     .standings-table th { text-align: center; }
     .standings-table td { text-align: center; }
-    .standings-table td.team-cell { text-align: left; font-weight: bold; }
+    .standings-table td.team-cell { text-align: left; font-weight: bold; color: #38bdf8; text-decoration: underline; }
     .top-three { background-color: rgba(16, 185, 129, 0.1); }
     .relegation-zone { background-color: rgba(239, 68, 68, 0.1); }
 
@@ -84,6 +84,14 @@
     .stat-card { background: #0f172a; padding: 10px; border-radius: 8px; text-align: center; }
     .stat-val { font-size: 1.1rem; font-weight: bold; color: #38bdf8; }
     .stat-lbl { font-size: 0.75rem; color: #94a3b8; }
+
+    /* TAKIM DETAY MODALI TASARIMI */
+    .form-badge { display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-size: 0.75rem; font-weight: bold; color: #fff; margin: 0 2px; }
+    .badge-win { background-color: #10b981; }
+    .badge-draw { background-color: #f59e0b; }
+    .badge-loss { background-color: #ef4444; }
+    .results-list { list-style: none; margin-top: 10px; }
+    .results-list li { display: flex; justify-content: space-between; padding: 8px 12px; background: #0f172a; border-radius: 6px; margin-bottom: 6px; font-size: 0.85rem; }
   </style>
 </head>
 <body>
@@ -116,7 +124,7 @@
   </div>
 
   <!-- SÜPER LİG PUAN DURUMU BÖLÜMÜ -->
-  <div class="section-title">🏆 Trendyol Süper Lig Puan Durumu</div>
+  <div class="section-title">🏆 Trendyol Süper Lig Puan Durumu (Detaylar İçin Takıma Tıklayın)</div>
   <div class="table-container">
     <table class="standings-table">
       <thead>
@@ -178,156 +186,210 @@
       { id: 24, league: "Liga Portugal", date: "26.10.2026 Pazartesi", time: "21:45", home: "CD Santa Clara", away: "Benfica", stadium: "Estadio de Sao Miguel", predScore: "1 - 2", probHome: 22, probDraw: 28, probAway: 50, comment: "Benfica zorlu ada deplasmanından kalite farkıyla galip ayrılır.", homeXg: "0.85", awayXg: "1.75", bestPick: "Maç Sonucu 2", isDerby: false }
     ];
 
-    // SÜPER LİG PUAN DURUMU VERİSİ
+    // SÜPER LİG PUAN DURUMU VE TAKIM PERFORMANS BİLGİLERİ
     var standings = [
-      { pos: 1, team: "Galatasaray", o: 8, g: 6, b: 1, m: 1, ag: 17, yg: 11, av: "+6", p: 19 },
-      { pos: 2, team: "Amed SK", o: 8, g: 5, b: 2, m: 1, ag: 18, yg: 9, av: "+9", p: 17 },
-      { pos: 3, team: "Fenerbahçe", o: 8, g: 5, b: 1, m: 2, ag: 22, yg: 6, av: "+16", p: 16 },
-      { pos: 4, team: "Beşiktaş", o: 7, g: 5, b: 0, m: 2, ag: 16, yg: 8, av: "+8", p: 15 },
-      { pos: 5, team: "Trabzonspor", o: 7, g: 4, b: 1, m: 2, ag: 16, yg: 5, av: "+11", p: 13 },
-      { pos: 6, team: "Çorum FK", o: 8, g: 4, b: 1, m: 3, ag: 18, yg: 13, av: "+5", p: 13 },
-      { pos: 7, team: "Kocaelispor", o: 7, g: 4, b: 0, m: 3, ag: 8, yg: 6, av: "+2", p: 12 },
-      { pos: 8, team: "Alanyaspor", o: 8, g: 3, b: 3, m: 2, ag: 8, yg: 9, av: "-1", p: 12 },
-      { pos: 9, team: "Erzurumspor FK", o: 8, g: 3, b: 2, m: 3, ag: 5, yg: 11, av: "-6", p: 11 },
-      { pos: 10, team: "Kasımpaşa SK", o: 7, g: 2, b: 4, m: 1, ag: 8, yg: 8, av: "0", p: 10 },
-      { pos: 11, team: "Çaykur Rizespor", o: 8, g: 3, b: 1, m: 4, ag: 8, yg: 11, av: "-3", p: 10 },
-      { pos: 12, team: "Başakşehir FK", o: 7, g: 2, b: 2, m: 3, ag: 10, yg: 11, av: "-1", p: 8 },
-      { pos: 13, team: "Gaziantep FK", o: 7, g: 2, b: 2, m: 3, ag: 7, yg: 10, av: "-3", p: 8 },
-      { pos: 14, team: "Gençlerbirliği", o: 8, g: 2, b: 2, m: 4, ag: 7, yg: 16, av: "-9", p: 8 },
-      { pos: 15, team: "Göztepe", o: 7, g: 1, b: 3, m: 3, ag: 15, yg: 15, av: "0", p: 6 },
-      { pos: 16, team: "Konyaspor", o: 8, g: 1, b: 2, m: 5, ag: 4, yg: 9, av: "-5", p: 5 },
-      { pos: 17, team: "Samsunspor", o: 7, g: 1, b: 1, m: 5, ag: 6, yg: 15, av: "-9", p: 4 },
-      { pos: 18, team: "Eyüpspor", o: 8, g: 1, b: 0, m: 7, ag: 2, yg: 22, av: "-20", p: 3 }
+      { 
+        pos: 1, team: "Galatasaray", o: 8, g: 6, b: 1, m: 1, ag: 17, yg: 11, av: "+6", p: 19,
+        form: ["G", "G", "G", "B", "G"], ppm: "2.38", cleanSheet: 3, homeStat: "3G - 1B - 0M",
+        results: [
+          { match: "Galatasaray 2 - 1 Alanyaspor", res: "G" },
+          { match: "Rizespor 1 - 2 Galatasaray", res: "G" },
+          { match: "Galatasaray 3 - 3 Kasımpaşa", res: "B" },
+          { match: "Fenerbahçe 1 - 3 Galatasaray", res: "G" },
+          { match: "Galatasaray 3 - 1 Gaziantep FK", res: "G" }
+        ]
+      },
+      { 
+        pos: 2, team: "Amed SK", o: 8, g: 5, b: 2, m: 1, ag: 18, yg: 9, av: "+9", p: 17,
+        form: ["G", "G", "B", "G", "G"], ppm: "2.12", cleanSheet: 4, homeStat: "4G - 0B - 0M",
+        results: [
+          { match: "Amed SK 3 - 1 Kocaelispor", res: "G" },
+          { match: "Göztepe 0 - 2 Amed SK", res: "G" },
+          { match: "Amed SK 1 - 1 Erzurumspor", res: "B" },
+          { match: "Bandırmaspor 0 - 2 Amed SK", res: "G" },
+          { match: "Amed SK 2 - 0 Sakaryaspor", res: "G" }
+        ]
+      },
+      { 
+        pos: 3, team: "Fenerbahçe", o: 8, g: 5, b: 1, m: 2, ag: 22, yg: 6, av: "+16", p: 16,
+        form: ["M", "G", "G", "G", "M"], ppm: "2.00", cleanSheet: 5, homeStat: "3G - 0B - 1M",
+        results: [
+          { match: "Samsunspor 2 - 1 Fenerbahçe", res: "M" },
+          { match: "Fenerbahçe 5 - 0 Rizespor", res: "G" },
+          { match: "Kasımpaşa 0 - 2 Fenerbahçe", res: "G" },
+          { match: "Fenerbahçe 1 - 3 Galatasaray", res: "M" },
+          { match: "Alanyaspor 0 - 2 Fenerbahçe", res: "G" }
+        ]
+      },
+      { 
+        pos: 4, team: "Beşiktaş", o: 7, g: 5, b: 0, m: 2, ag: 16, yg: 8, av: "+8", p: 15,
+        form: ["G", "M", "G", "G", "G"], ppm: "2.14", cleanSheet: 3, homeStat: "3G - 0B - 0M",
+        results: [
+          { match: "Gaziantep FK 0 - 1 Beşiktaş", res: "G" },
+          { match: "Beşiktaş 4 - 2 Eyüpspor", res: "G" },
+          { match: "Trabzonspor 2 - 0 Beşiktaş", res: "M" },
+          { match: "Beşiktaş 2 - 1 Sivasspor", res: "G" },
+          { match: "Beşiktaş 4 - 2 Antalyaspor", res: "G" }
+        ]
+      },
+      { 
+        pos: 5, team: "Trabzonspor", o: 7, g: 4, b: 1, m: 2, ag: 16, yg: 5, av: "+11", p: 13,
+        form: ["B", "G", "G", "M", "G"], ppm: "1.85", cleanSheet: 4, homeStat: "2G - 1B - 0M",
+        results: [
+          { match: "Hatayspor 1 - 1 Trabzonspor", res: "B" },
+          { match: "Trabzonspor 2 - 0 Beşiktaş", res: "G" },
+          { match: "Gaziantep FK 0 - 3 Trabzonspor", res: "G" },
+          { match: "Trabzonspor 0 - 1 Konyaspor", res: "M" },
+          { match: "Sivasspor 0 - 0 Trabzonspor", res: "B" }
+        ]
+      },
+      { 
+        pos: 6, team: "Çorum FK", o: 8, g: 4, b: 1, m: 3, ag: 18, yg: 13, av: "+5", p: 13,
+        form: ["G", "B", "M", "G", "G"], ppm: "1.62", cleanSheet: 2, homeStat: "2G - 1B - 1M",
+        results: [
+          { match: "Çorum FK 2 - 1 Gençlerbirliği", res: "G" },
+          { match: "Kasımpaşa 2 - 2 Çorum FK", res: "B" },
+          { match: "Çorum FK 0 - 2 Adanaspor", res: "M" },
+          { match: "Manisa FK 1 - 3 Çorum FK", res: "G" },
+          { match: "Çorum FK 3 - 0 Iğdır FK", res: "G" }
+        ]
+      },
+      { 
+        pos: 7, team: "Kocaelispor", o: 7, g: 4, b: 0, m: 3, ag: 8, yg: 6, av: "+2", p: 12,
+        form: ["G", "M", "G", "G", "M"], ppm: "1.71", cleanSheet: 3, homeStat: "2G - 0B - 1M",
+        results: [
+          { match: "Kocaelispor 1 - 0 Şanlıurfaspor", res: "G" },
+          { match: "Amed SK 3 - 1 Kocaelispor", res: "M" },
+          { match: "Kocaelispor 2 - 1 Manisa FK", res: "G" },
+          { match: "Çorum FK 0 - 2 Kocaelispor", res: "G" },
+          { match: "Kocaelispor 0 - 1 Gençlerbirliği", res: "M" }
+        ]
+      },
+      { 
+        pos: 8, team: "Alanyaspor", o: 8, g: 3, b: 3, m: 2, ag: 8, yg: 9, av: "-1", p: 12,
+        form: ["M", "B", "G", "G", "B"], ppm: "1.50", cleanSheet: 2, homeStat: "1G - 2B - 1M",
+        results: [
+          { match: "Galatasaray 2 - 1 Alanyaspor", res: "M" },
+          { match: "Alanyaspor 1 - 1 Rizespor", res: "B" },
+          { match: "Adana Demir 0 - 2 Alanyaspor", res: "G" },
+          { match: "Alanyaspor 2 - 1 Hatayspor", res: "G" },
+          { match: "Başakşehir 0 - 0 Alanyaspor", res: "B" }
+        ]
+      },
+      { 
+        pos: 9, team: "Erzurumspor FK", o: 8, g: 3, b: 2, m: 3, ag: 5, yg: 11, av: "-6", p: 11,
+        form: ["B", "M", "B", "G", "G"], ppm: "1.37", cleanSheet: 3, homeStat: "2G - 1B - 1M",
+        results: [
+          { match: "Iğdır FK 1 - 1 Erzurumspor", res: "B" },
+          { match: "Erzurumspor 0 - 2 Boluspor", res: "M" },
+          { match: "Amed SK 1 - 1 Erzurumspor", res: "B" },
+          { match: "Erzurumspor 2 - 0 Altay", res: "G" },
+          { match: "Keçiörengücü 0 - 1 Erzurumspor", res: "G" }
+        ]
+      },
+      { 
+        pos: 10, team: "Kasımpaşa SK", o: 7, g: 2, b: 4, m: 1, ag: 8, yg: 8, av: "0", p: 10,
+        form: ["B", "B", "M", "G", "B"], ppm: "1.42", cleanSheet: 2, homeStat: "0G - 3B - 1M",
+        results: [
+          { match: "Kasımpaşa 0 - 0 Bodrum FK", res: "B" },
+          { match: "Galatasaray 3 - 3 Kasımpaşa", res: "B" },
+          { match: "Kasımpaşa 0 - 2 Fenerbahçe", res: "M" },
+          { match: "Rizespor 0 - 1 Kasımpaşa", res: "G" },
+          { match: "Kasımpaşa 1 - 1 Adana Demir", res: "B" }
+        ]
+      },
+      { 
+        pos: 11, team: "Çaykur Rizespor", o: 8, g: 3, b: 1, m: 4, ag: 8, yg: 11, av: "-3", p: 10,
+        form: ["M", "B", "M", "M", "G"], ppm: "1.25", cleanSheet: 2, homeStat: "1G - 1B - 2M",
+        results: [
+          { match: "Rizespor 1 - 2 Galatasaray", res: "M" },
+          { match: "Alanyaspor 1 - 1 Rizespor", res: "B" },
+          { match: "Fenerbahçe 5 - 0 Rizespor", res: "M" },
+          { match: "Rizespor 0 - 1 Kasımpaşa", res: "M" },
+          { match: "Adana Demir 1 - 2 Rizespor", res: "G" }
+        ]
+      },
+      { 
+        pos: 12, team: "Başakşehir FK", o: 7, g: 2, b: 2, m: 3, ag: 10, yg: 11, av: "-1", p: 8,
+        form: ["M", "B", "M", "G", "B"], ppm: "1.14", cleanSheet: 2, homeStat: "1G - 1B - 1M",
+        results: [
+          { match: "Kayserispor 2 - 1 Başakşehir", res: "M" },
+          { match: "Başakşehir 1 - 1 Sivasspor", res: "B" },
+          { match: "Bodrum FK 1 - 0 Başakşehir", res: "M" },
+          { match: "Başakşehir 5 - 2 Antalyaspor", res: "G" },
+          { match: "Başakşehir 0 - 0 Alanyaspor", res: "B" }
+        ]
+      },
+      { 
+        pos: 13, team: "Gaziantep FK", o: 7, g: 2, b: 2, m: 3, ag: 7, yg: 10, av: "-3", p: 8,
+        form: ["M", "B", "M", "M", "G"], ppm: "1.14", cleanSheet: 1, homeStat: "1G - 1B - 1M",
+        results: [
+          { match: "Gaziantep FK 0 - 1 Beşiktaş", res: "M" },
+          { match: "Sivasspor 1 - 1 Gaziantep FK", res: "B" },
+          { match: "Trabzonspor 0 - 3 Gaziantep FK", res: "G" },
+          { match: "Galatasaray 3 - 1 Gaziantep FK", res: "M" },
+          { match: "Gaziantep FK 0 - 1 Bodrum FK", res: "M" }
+        ]
+      },
+      { 
+        pos: 14, team: "Gençlerbirliği", o: 8, g: 2, b: 2, m: 4, ag: 7, yg: 16, av: "-9", p: 8,
+        form: ["M", "G", "B", "M", "B"], ppm: "1.00", cleanSheet: 1, homeStat: "1G - 1B - 2M",
+        results: [
+          { match: "Çorum FK 2 - 1 Gençlerbirliği", res: "M" },
+          { match: "Gençlerbirliği 1 - 0 Pendikspor", res: "G" },
+          { match: "Manisa FK 1 - 1 Gençlerbirliği", res: "B" },
+          { match: "Gençlerbirliği 0 - 3 Ümraniyespor", res: "M" },
+          { match: "Kocaelispor 0 - 1 Gençlerbirliği", res: "G" }
+        ]
+      },
+      { 
+        pos: 15, team: "Göztepe", o: 7, g: 1, b: 3, m: 3, ag: 15, yg: 15, av: "0", p: 6,
+        form: ["B", "M", "B", "G", "B"], ppm: "0.85", cleanSheet: 1, homeStat: "1G - 2B - 1M",
+        results: [
+          { match: "Eyüpspor 0 - 0 Göztepe", res: "B" },
+          { match: "Amed SK 0 - 2 Göztepe", res: "G" },
+          { match: "Göztepe 2 - 2 Kayserispor", res: "B" },
+          { match: "Samsunspor 4 - 3 Göztepe", res: "M" },
+          { match: "Göztepe 1 - 1 Bodrum FK", res: "B" }
+        ]
+      },
+      { 
+        pos: 16, team: "Konyaspor", o: 8, g: 1, b: 2, m: 5, ag: 4, yg: 9, av: "-5", p: 5,
+        form: ["M", "B", "G", "M", "M"], ppm: "0.62", cleanSheet: 2, homeStat: "0G - 1B - 3M",
+        results: [
+          { match: "Konyaspor 2 - 3 Eyüpspor", res: "M" },
+          { match: "Trabzonspor 0 - 1 Konyaspor", res: "G" },
+          { match: "Konyaspor 0 - 0 Sivasspor", res: "B" },
+          { match: "Samsunspor 2 - 0 Konyaspor", res: "M" },
+          { match: "Konyaspor 1 - 2 Kayserispor", res: "M" }
+        ]
+      },
+      { 
+        pos: 17, team: "Samsunspor", o: 7, g: 1, b: 1, m: 5, ag: 6, yg: 15, av: "-9", p: 4,
+        form: ["G", "M", "M", "M", "B"], ppm: "0.57", cleanSheet: 1, homeStat: "1G - 0B - 2M",
+        results: [
+          { match: "Samsunspor 2 - 1 Fenerbahçe", res: "G" },
+          { match: "Adana Demir 2 - 1 Samsunspor", res: "M" },
+          { match: "Samsunspor 0 - 2 Konyaspor", res: "M" },
+          { match: "Samsunspor 0 - 1 Antalyaspor", res: "M" },
+          { match: "Hatayspor 1 - 1 Samsunspor", res: "B" }
+        ]
+      },
+      { 
+        pos: 18, team: "Eyüpspor", o: 8, g: 1, b: 0, m: 7, ag: 2, yg: 22, av: "-20", p: 3,
+        form: ["M", "M", "M", "G", "M"], ppm: "0.37", cleanSheet: 1, homeStat: "0G - 0B - 4M",
+        results: [
+          { match: "Konyaspor 2 - 3 Eyüpspor", res: "G" },
+          { match: "Beşiktaş 4 - 2 Eyüpspor", res: "M" },
+          { match: "Eyüpspor 0 - 0 Göztepe", res: "B" },
+          { match: "Eyüpspor 0 - 2 Bodrum FK", res: "M" },
+          { match: "Trabzonspor 4 - 0 Eyüpspor", res: "M" }
+        ]
+      }
     ];
 
     function renderTable(data) {
       var tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
 
-      for (var i = 0; i < data.length; i++) {
-        var m = data[i];
-        var tr = document.createElement('tr');
-        if (m.isDerby) {
-          tr.className = 'derby-row';
-        }
-
-        (function(matchId) {
-          tr.onclick = function() {
-            openModal(matchId);
-          };
-        })(m.id);
-
-        var derbyTag = m.isDerby ? '<span class="derby-badge">DERBİ</span>' : '';
-
-        tr.innerHTML = 
-          '<td>' + m.date + '</td>' +
-          '<td>' + m.time + '</td>' +
-          '<td><span class="league-badge">' + m.league + '</span></td>' +
-          '<td><strong>' + m.home + '</strong></td>' +
-          '<td><strong>' + m.away + '</strong></td>' +
-          '<td>' + m.stadium + derbyTag + '</td>' +
-          '<td><span class="action-btn">Analiz İncele</span></td>';
-
-        tbody.appendChild(tr);
-      }
-    }
-
-    function renderStandings() {
-      var tbody = document.getElementById('standingsBody');
-      tbody.innerHTML = '';
-
-      for (var i = 0; i < standings.length; i++) {
-        var s = standings[i];
-        var tr = document.createElement('tr');
-
-        if (s.pos <= 3) {
-          tr.className = 'top-three';
-        } else if (s.pos >= 15) {
-          tr.className = 'relegation-zone';
-        }
-
-        tr.innerHTML = 
-          '<td>' + s.pos + '</td>' +
-          '<td class="team-cell">' + s.team + '</td>' +
-          '<td>' + s.o + '</td>' +
-          '<td>' + s.g + '</td>' +
-          '<td>' + s.b + '</td>' +
-          '<td>' + s.m + '</td>' +
-          '<td>' + s.ag + '</td>' +
-          '<td>' + s.yg + '</td>' +
-          '<td>' + s.av + '</td>' +
-          '<td><strong>' + s.p + '</strong></td>';
-
-        tbody.appendChild(tr);
-      }
-    }
-
-    function openModal(id) {
-      var match = null;
-      for (var i = 0; i < matches.length; i++) {
-        if (matches[i].id === id) {
-          match = matches[i];
-          break;
-        }
-      }
-      if (!match) return;
-
-      var modalContent = document.getElementById('modalContent');
-      modalContent.innerHTML = 
-        '<div style="text-align:center; margin-bottom:10px;"><span class="league-badge" style="font-size:0.85rem;">' + match.league + '</span></div>' +
-        '<div class="match-header-card">' +
-          '<div class="team-box"><div class="team-name">' + match.home + '</div><div style="font-size:0.75rem; color:#94a3b8;">Ev Sahibi</div></div>' +
-          '<div class="score-pred">' + match.predScore + '</div>' +
-          '<div class="team-box"><div class="team-name">' + match.away + '</div><div style="font-size:0.75rem; color:#94a3b8;">Deplasman</div></div>' +
-        '</div>' +
-        '<div class="prob-bar-container">' +
-          '<div class="prob-title">AI Olasılık Tahmini (%)</div>' +
-          '<div class="prob-bar">' +
-            '<div class="prob-home" style="width: ' + match.probHome + '%"></div>' +
-            '<div class="prob-draw" style="width: ' + match.probDraw + '%"></div>' +
-            '<div class="prob-away" style="width: ' + match.probAway + '%"></div>' +
-          '</div>' +
-          '<div class="prob-legend">' +
-            '<span style="color:#10b981;">1 (' + match.probHome + '%)</span>' +
-            '<span style="color:#f59e0b;">X (' + match.probDraw + '%)</span>' +
-            '<span style="color:#3b82f6;">2 (' + match.probAway + '%)</span>' +
-          '</div>' +
-        '</div>' +
-        '<div class="stats-grid">' +
-          '<div class="stat-card"><div class="stat-val">' + match.homeXg + ' - ' + match.awayXg + '</div><div class="stat-lbl">Beklenen Gol (xG)</div></div>' +
-          '<div class="stat-card"><div class="stat-val">' + match.bestPick + '</div><div class="stat-lbl">Önerilen AI Bahis Tercihi</div></div>' +
-        '</div>' +
-        '<div class="analysis-text"><strong style="color:#38bdf8;">🧠 Yapay Zeka Taktiksel Yorumu:</strong><br/>' + match.comment + '</div>';
-
-      document.getElementById('matchModal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('matchModal').style.display = 'none';
-    }
-
-    function filterTable() {
-      var q = document.getElementById('searchInput').value.toLowerCase();
-      var filtered = [];
-      for (var i = 0; i < matches.length; i++) {
-        var m = matches[i];
-        if (m.home.toLowerCase().indexOf(q) !== -1 || 
-            m.away.toLowerCase().indexOf(q) !== -1 || 
-            m.league.toLowerCase().indexOf(q) !== -1) {
-          filtered.push(m);
-        }
-      }
-      renderTable(filtered);
-    }
-
-    window.onclick = function(e) {
-      if (e.target === document.getElementById('matchModal')) {
-        closeModal();
-      }
-    };
-
-    renderTable(matches);
-    renderStandings();
-  </script>
-</body>
-</html>
+      for (var i = 0; i < data.
