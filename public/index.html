@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Global Futbol Karşılaşmaları Haftalık Tahminleri</title>
 
   <!-- PWA Mobil Uygulama Desteği -->
@@ -12,14 +12,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GlobalFutbol">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js');
-      });
-    }
-  </script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +23,7 @@
     .search-input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155; background-color: #1e293b; color: #f8fafc; outline: none; }
     .search-input:focus { border-color: #38bdf8; }
 
-    /* MOBİL YATAY KAYDIRMA */
+    /* MOBİL YATAY KAYDIRMA TABLO KONTEYNERİ */
     .table-container { 
       width: 100%; 
       max-width: 950px; 
@@ -54,7 +46,7 @@
     .league-badge { background-color: #334155; color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; }
     .action-btn { background-color: #0284c7; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; display: inline-block; }
 
-    /* PUAN DURUMU STİLLERİ */
+    /* PUAN DURUMU BÖLÜMÜ STİLLERİ */
     .section-title { width: 100%; max-width: 950px; text-align: left; font-size: 1.3rem; color: #38bdf8; margin-bottom: 15px; border-left: 4px solid #38bdf8; padding-left: 10px; }
     .standings-table { min-width: 600px; }
     .standings-table th { text-align: center; }
@@ -63,7 +55,7 @@
     .top-three { background-color: rgba(16, 185, 129, 0.1); }
     .relegation-zone { background-color: rgba(239, 68, 68, 0.1); }
 
-    /* MODAL */
+    /* MODAL WINDOW */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; backdrop-filter: blur(4px); }
     .modal-card { background-color: #1e293b; border: 1px solid #38bdf8; border-radius: 16px; width: 100%; max-width: 650px; padding: 24px; box-shadow: 0 20px 30px rgba(0,0,0,0.6); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
@@ -154,6 +146,12 @@
   </div>
 
   <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+
     var matches = [
       { id: 1, league: "Süper Lig", date: "16.10.2026 Cuma", time: "20:00", home: "Çorum FK", away: "Çaykur Rizespor", stadium: "Çorum Şehir Stadyumu", predScore: "1 - 1", probHome: 32, probDraw: 38, probAway: 30, comment: "Çorum FK evinde dirençli futbol sergiliyor. Rizesporun kanat ataklarına karşı dengeli maç beklenmektedir.", homeXg: "1.10", awayXg: "1.15", bestPick: "KG Var / 2.5 Alt", isDerby: false },
       { id: 2, league: "Süper Lig", date: "17.10.2026 Cumartesi", time: "13:30", home: "Erzurumspor FK", away: "Eyüpspor", stadium: "Kazım Karabekir Stadyumu", predScore: "1 - 2", probHome: 25, probDraw: 30, probAway: 45, comment: "Eyüpsporun topa sahip olma oranı ve kadro kalitesi deplasmanda bir adım önde duruyor.", homeXg: "0.95", awayXg: "1.65", bestPick: "Maç Sonucu 2", isDerby: false },
@@ -207,8 +205,213 @@
       { pos: 18, team: "Eyüpspor", o: 8, g: 1, b: 0, m: 7, ag: 2, yg: 22, av: "-20", p: 3, form: "M-M-M-G-M", ppm: "0.37", cleanSheet: "1 Maç", homeStat: "0G-0B-4M" }
     ];
 
-    // OYNANAN BÜTÜN MAÇLAR LİSTESİ
     var teamMatchesMap = {
       "Galatasaray": ["1. Hafta: Galatasaray 2 - 1 Hatayspor (G)", "2. Hafta: Konyaspor 1 - 2 Galatasaray (G)", "3. Hafta: Galatasaray 3 - 1 Adana Demir (G)", "4. Hafta: Gaziantep FK 1 - 3 Galatasaray (G)", "5. Hafta: Fenerbahçe 1 - 3 Galatasaray (G)", "6. Hafta: Galatasaray 3 - 3 Kasımpaşa (B)", "7. Hafta: Rizespor 1 - 2 Galatasaray (G)", "8. Hafta: Galatasaray 2 - 1 Alanyaspor (G)"],
       "Amed SK": ["1. Hafta: Karagümrük 0 - 0 Amed SK (B)", "2. Hafta: Amed SK 4 - 2 İstanbulspor (G)", "3. Hafta: Sakaryaspor 0 - 2 Amed SK (G)", "4. Hafta: Amed SK 2 - 1 Kocaelispor (G)", "5. Hafta: Bandırmaspor 0 - 2 Amed SK (G)", "6. Hafta: Amed SK 1 - 1 Erzurumspor (B)", "7. Hafta: Göztepe 0 - 2 Amed SK (G)", "8. Hafta: Amed SK 3 - 1 Boluspor (G)"],
-      "Fenerbahçe": ["1. Hafta: Fenerbahçe 1 - 0 Adana Demir (G)", "2. Hafta: Göztepe 2 - 2 Fenerbahçe (B)", "3. Hafta: Rizespor 0 - 5 Fenerbahçe (G)", "4. Hafta: Fenerbahçe 3 - 0 Alanyaspor (G)", "5. Hafta: Kasımpaşa 0 - 2 Fenerbahçe (G)", "6. Hafta: Fenerbahçe 1 - 3 Galatasaray (M)", "7. Hafta:
+      "Fenerbahçe": ["1. Hafta: Fenerbahçe 1 - 0 Adana Demir (G)", "2. Hafta: Göztepe 2 - 2 Fenerbahçe (B)", "3. Hafta: Rizespor 0 - 5 Fenerbahçe (G)", "4. Hafta: Fenerbahçe 3 - 0 Alanyaspor (G)", "5. Hafta: Kasımpaşa 0 - 2 Fenerbahçe (G)", "6. Hafta: Fenerbahçe 1 - 3 Galatasaray (M)", "7. Hafta: Antalyaspor 0 - 2 Fenerbahçe (G)", "8. Hafta: Samsunspor 2 - 1 Fenerbahçe (M)"],
+      "Beşiktaş": ["1. Hafta: Samsunspor 0 - 2 Beşiktaş (G)", "2. Hafta: Beşiktaş 4 - 2 Antalyaspor (G)", "3. Hafta: Beşiktaş 2 - 1 Sivasspor (G)", "4. Hafta: Trabzonspor 2 - 0 Beşiktaş (M)", "5. Hafta: Beşiktaş 4 - 2 Eyüpspor (G)", "6. Hafta: Kayserispor 0 - 3 Beşiktaş (G)", "7. Hafta: Gaziantep FK 0 - 1 Beşiktaş (G)"],
+      "Trabzonspor": ["1. Hafta: Sivasspor 0 - 0 Trabzonspor (B)", "2. Hafta: Eyüpspor 0 - 0 Trabzonspor (B)", "3. Hafta: Trabzonspor 0 - 1 Konyaspor (M)", "4. Hafta: Trabzonspor 2 - 0 Beşiktaş (G)", "5. Hafta: Gaziantep FK 0 - 3 Trabzonspor (G)", "6. Hafta: Trabzonspor 4 - 0 Kayserispor (G)", "7. Hafta: Hatayspor 1 - 1 Trabzonspor (B)"],
+      "Çorum FK": ["1. Hafta: Ümraniyespor 2 - 1 Çorum FK (M)", "2. Hafta: Çorum FK 3 - 0 Iğdır FK (G)", "3. Hafta: Bandırmaspor 0 - 0 Çorum FK (B)", "4. Hafta: Çorum FK 2 - 1 Gençlerbirliği (G)", "5. Hafta: Manisa FK 1 - 3 Çorum FK (G)", "6. Hafta: Çorum FK 0 - 2 Adanaspor (M)", "7. Hafta: Kasımpaşa 2 - 2 Çorum FK (B)", "8. Hafta: Çorum FK 2 - 1 Sakaryaspor (G)"],
+      "Kocaelispor": ["1. Hafta: Kocaelispor 1 - 0 Gençlerbirliği (G)", "2. Hafta: Pendikspor 1 - 2 Kocaelispor (G)", "3. Hafta: Kocaelispor 0 - 2 Erzurumspor (M)", "4. Hafta: Amed SK 2 - 1 Kocaelispor (M)", "5. Hafta: Kocaelispor 2 - 1 Manisa FK (G)", "6. Hafta: Çorum FK 0 - 2 Kocaelispor (G)", "7. Hafta: Kocaelispor 1 - 0 Şanlıurfaspor (G)"],
+      "Alanyaspor": ["1. Hafta: Alanyaspor 1 - 1 Eyüpspor (B)", "2. Hafta: Başakşehir 0 - 0 Alanyaspor (B)", "3. Hafta: Alanyaspor 2 - 1 Hatayspor (G)", "4. Hafta: Fenerbahçe 3 - 0 Alanyaspor (M)", "5. Hafta: Adana Demir 0 - 2 Alanyaspor (G)", "6. Hafta: Alanyaspor 1 - 1 Rizespor (B)", "7. Hafta: Galatasaray 2 - 1 Alanyaspor (M)", "8. Hafta: Alanyaspor 1 - 0 Kasımpaşa (G)"],
+      "Erzurumspor FK": ["1. Hafta: Bandırmaspor 3 - 2 Erzurumspor (M)", "2. Hafta: Erzurumspor 1 - 0 Ankaragücü (G)", "3. Hafta: Kocaelispor 0 - 2 Erzurumspor (G)", "4. Hafta: Erzurumspor 2 - 0 Altay (G)", "5. Hafta: Keçiörengücü 0 - 1 Erzurumspor (G)", "6. Hafta: Amed SK 1 - 1 Erzurumspor (B)", "7. Hafta: Erzurumspor 0 - 2 Boluspor (M)", "8. Hafta: Iğdır FK 1 - 1 Erzurumspor (B)"],
+      "Kasımpaşa SK": ["1. Hafta: Kasımpaşa 2 - 3 Konyaspor (M)", "2. Hafta: Hatayspor 1 - 1 Kasımpaşa (B)", "3. Hafta: Kasımpaşa 0 - 0 Adana Demir (B)", "4. Hafta: Rizespor 0 - 1 Kasımpaşa (G)", "5. Hafta: Kasımpaşa 0 - 2 Fenerbahçe (M)", "6. Hafta: Galatasaray 3 - 3 Kasımpaşa (B)", "7. Hafta: Kasımpaşa 0 - 0 Bodrum FK (B)"],
+      "Çaykur Rizespor": ["1. Hafta: Rizespor 1 - 1 Başakşehir (B)", "2. Hafta: Adana Demir 1 - 2 Rizespor (G)", "3. Hafta: Rizespor 0 - 5 Fenerbahçe (M)", "4. Hafta: Rizespor 0 - 1 Kasımpaşa (M)", "5. Hafta: Galatasaray 5 - 0 Rizespor (M)", "6. Hafta: Alanyaspor 1 - 1 Rizespor (B)", "7. Hafta: Rizespor 1 - 2 Galatasaray (M)", "8. Hafta: Antalyaspor 0 - 1 Rizespor (G)"],
+      "Başakşehir FK": ["1. Hafta: Rizespor 1 - 1 Başakşehir (B)", "2. Hafta: Başakşehir 4 - 2 Antalyaspor (G)", "3. Hafta: Bodrum FK 1 - 0 Başakşehir (M)", "4. Hafta: Başakşehir 1 - 1 Sivasspor (B)", "5. Hafta: Kayserispor 2 - 1 Başakşehir (M)", "6. Hafta: Başakşehir 0 - 0 Alanyaspor (B)", "7. Hafta: Trabzonspor 1 - 0 Başakşehir (M)"],
+      "Gaziantep FK": ["1. Hafta: Bodrum FK 0 - 1 Gaziantep FK (G)", "2. Hafta: Gaziantep FK 0 - 1 Beşiktaş (M)", "3. Hafta: Galatasaray 3 - 1 Gaziantep FK (M)", "4. Hafta: Sivasspor 1 - 1 Gaziantep FK (B)", "5. Hafta: Trabzonspor 0 - 3 Gaziantep FK (G)", "6. Hafta: Gaziantep FK 0 - 0 Eyüpspor (B)", "7. Hafta: Samsunspor 2 - 1 Gaziantep FK (M)"],
+      "Gençlerbirliği": ["1. Hafta: Kocaelispor 1 - 0 Gençlerbirliği (M)", "2. Hafta: Gençlerbirliği 0 - 3 Ümraniyespor (M)", "3. Hafta: Manisa FK 1 - 1 Gençlerbirliği (B)", "4. Hafta: Gençlerbirliği 1 - 0 Pendikspor (G)", "5. Hafta: Çorum FK 2 - 1 Gençlerbirliği (M)", "6. Hafta: Gençlerbirliği 2 - 1 Boluspor (G)", "7. Hafta: Keçiörengücü 1 - 1 Gençlerbirliği (B)", "8. Hafta: Gençlerbirliği 0 - 1 Iğdır FK (M)"],
+      "Göztepe": ["1. Hafta: Antalyaspor 0 - 0 Göztepe (B)", "2. Hafta: Göztepe 2 - 2 Fenerbahçe (B)", "3. Hafta: Alanyaspor 1 - 1 Göztepe (B)", "4. Hafta: Göztepe 2 - 0 Bodrum FK (G)", "5. Hafta: Kayserispor 2 - 2 Göztepe (B)", "6. Hafta: Amed SK 2 - 0 Göztepe (M)", "7. Hafta: Eyüpspor 0 - 0 Göztepe (B)"],
+      "Konyaspor": ["1. Hafta: Kasımpaşa 2 - 3 Konyaspor (G)", "2. Hafta: Konyaspor 1 - 2 Galatasaray (M)", "3. Hafta: Bodrum FK 3 - 1 Konyaspor (M)", "4. Hafta: Konyaspor 0 - 0 Kayserispor (B)", "5. Hafta: Samsunspor 2 - 0 Konyaspor (M)", "6. Hafta: Konyaspor 0 - 0 Sivasspor (B)", "7. Hafta: Trabzonspor 0 - 1 Konyaspor (G)", "8. Hafta: Konyaspor 2 - 3 Eyüpspor (M)"],
+      "Samsunspor": ["1. Hafta: Samsunspor 0 - 2 Beşiktaş (M)", "2. Hafta: Gaziantep FK 0 - 1 Samsunspor (G)", "3. Hafta: Hatayspor 1 - 1 Samsunspor (B)", "4. Hafta: Samsunspor 0 - 1 Antalyaspor (M)", "5. Hafta: Samsunspor 0 - 2 Konyaspor (M)", "6. Hafta: Adana Demir 2 - 1 Samsunspor (M)", "7. Hafta: Samsunspor 2 - 1 Fenerbahçe (G)"],
+      "Eyüpspor": ["1. Hafta: Alanyaspor 1 - 1 Eyüpspor (B)", "2. Hafta: Eyüpspor 0 - 0 Trabzonspor (B)", "3. Hafta: Sivasspor 0 - 1 Eyüpspor (G)", "4. Hafta: Eyüpspor 0 - 2 Bodrum FK (M)", "5. Hafta: Beşiktaş 4 - 2 Eyüpspor (M)", "6. Hafta: Eyüpspor 0 - 0 Göztepe (B)", "7. Hafta: Trabzonspor 4 - 0 Eyüpspor (M)", "8. Hafta: Konyaspor 2 - 3 Eyüpspor (G)"]
+    };
+
+    function renderTable(data) {
+      var tbody = document.getElementById('tableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      for (var i = 0; i < data.length; i++) {
+        var m = data[i];
+        var tr = document.createElement('tr');
+        if (m.isDerby) {
+          tr.className = 'derby-row';
+        }
+
+        (function(matchId) {
+          tr.onclick = function() {
+            openModal(matchId);
+          };
+        })(m.id);
+
+        var derbyTag = m.isDerby ? '<span class="derby-badge">DERBİ</span>' : '';
+
+        tr.innerHTML = 
+          '<td>' + m.date + '</td>' +
+          '<td>' + m.time + '</td>' +
+          '<td><span class="league-badge">' + m.league + '</span></td>' +
+          '<td><strong>' + m.home + '</strong></td>' +
+          '<td><strong>' + m.away + '</strong></td>' +
+          '<td>' + m.stadium + derbyTag + '</td>' +
+          '<td><span class="action-btn">Analiz İncele</span></td>';
+
+        tbody.appendChild(tr);
+      }
+    }
+
+    function renderStandings() {
+      var tbody = document.getElementById('standingsBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      for (var i = 0; i < standings.length; i++) {
+        var s = standings[i];
+        var tr = document.createElement('tr');
+
+        if (s.pos <= 3) {
+          tr.className = 'top-three';
+        } else if (s.pos >= 15) {
+          tr.className = 'relegation-zone';
+        }
+
+        (function(teamObj) {
+          tr.onclick = function() {
+            openTeamModal(teamObj);
+          };
+        })(s);
+
+        tr.innerHTML = 
+          '<td>' + s.pos + '</td>' +
+          '<td class="team-cell">' + s.team + '</td>' +
+          '<td>' + s.o + '</td>' +
+          '<td>' + s.g + '</td>' +
+          '<td>' + s.b + '</td>' +
+          '<td>' + s.m + '</td>' +
+          '<td>' + s.ag + '</td>' +
+          '<td>' + s.yg + '</td>' +
+          '<td>' + s.av + '</td>' +
+          '<td><strong>' + s.p + '</strong></td>';
+
+        tbody.appendChild(tr);
+      }
+    }
+
+    function openTeamModal(team) {
+      var modalContent = document.getElementById('modalContent');
+      if (!modalContent) return;
+      
+      var formArr = team.form.split('-');
+      var formHtml = '';
+      for (var i = 0; i < formArr.length; i++) {
+        var bClass = formArr[i] === 'G' ? 'badge-win' : (formArr[i] === 'B' ? 'badge-draw' : 'badge-loss');
+        formHtml += '<span class="form-badge ' + bClass + '">' + formArr[i] + '</span>';
+      }
+
+      var matchArr = teamMatchesMap[team.team] || [];
+      var matchesHtml = '';
+      for (var k = 0; k < matchArr.length; k++) {
+        matchesHtml += '<li><span>' + matchArr[k] + '</span></li>';
+      }
+
+      modalContent.innerHTML = 
+        '<div style="text-align:center; margin-bottom:15px;">' +
+          '<h2 style="color:#38bdf8;">' + team.team + '</h2>' +
+          '<div style="color:#94a3b8; font-size:0.85rem; margin-top:4px;">Trendyol Süper Lig 2026 Sezon Performansı</div>' +
+        '</div>' +
+
+        '<div style="background:#0f172a; padding:12px; border-radius:10px; text-align:center; margin-bottom:15px;">' +
+          '<div style="font-size:0.8rem; color:#94a3b8; margin-bottom:6px;">Son 5 Maç Form Durumu</div>' +
+          '<div>' + formHtml + '</div>' +
+        '</div>' +
+
+        '<div class="stats-grid">' +
+          '<div class="stat-card"><div class="stat-val">' + team.ppm + '</div><div class="stat-lbl">Maç Başı Puan Ort.</div></div>' +
+          '<div class="stat-card"><div class="stat-val">' + team.cleanSheet + '</div><div class="stat-lbl">Gol Yemediği Maç</div></div>' +
+          '<div class="stat-card"><div class="stat-val">' + team.homeStat + '</div><div class="stat-lbl">İç Saha Karnesi</div></div>' +
+          '<div class="stat-card"><div class="stat-val">' + team.ag + ' Attı / ' + team.yg + ' Yedi</div><div class="stat-lbl">Gol Dengesi</div></div>' +
+        '</div>' +
+
+        '<div style="margin-top:20px;">' +
+          '<h4 style="color:#38bdf8; font-size:0.9rem; margin-bottom:8px;">📅 Bu Sezon Oynadığı Tüm Maçlar (' + matchArr.length + ' Maç):</h4>' +
+          '<ul class="results-list">' + matchesHtml + '</ul>' +
+        '</div>';
+
+      document.getElementById('matchModal').style.display = 'flex';
+    }
+
+    function openModal(id) {
+      var match = null;
+      for (var i = 0; i < matches.length; i++) {
+        if (matches[i].id === id) {
+          match = matches[i];
+          break;
+        }
+      }
+      if (!match) return;
+
+      var modalContent = document.getElementById('modalContent');
+      if (!modalContent) return;
+
+      modalContent.innerHTML = 
+        '<div style="text-align:center; margin-bottom:10px;"><span class="league-badge" style="font-size:0.85rem;">' + match.league + '</span></div>' +
+        '<div class="match-header-card">' +
+          '<div class="team-box"><div class="team-name">' + match.home + '</div><div style="font-size:0.75rem; color:#94a3b8;">Ev Sahibi</div></div>' +
+          '<div class="score-pred">' + match.predScore + '</div>' +
+          '<div class="team-box"><div class="team-name">' + match.away + '</div><div style="font-size:0.75rem; color:#94a3b8;">Deplasman</div></div>' +
+        '</div>' +
+        '<div class="prob-bar-container">' +
+          '<div class="prob-title">AI Olasılık Tahmini (%)</div>' +
+          '<div class="prob-bar">' +
+            '<div class="prob-home" style="width: ' + match.probHome + '%"></div>' +
+            '<div class="prob-draw" style="width: ' + match.probDraw + '%"></div>' +
+            '<div class="prob-away" style="width: ' + match.probAway + '%"></div>' +
+          '</div>' +
+          '<div class="prob-legend">' +
+            '<span style="color:#10b981;">1 (' + match.probHome + '%)</span>' +
+            '<span style="color:#f59e0b;">X (' + match.probDraw + '%)</span>' +
+            '<span style="color:#3b82f6;">2 (' + match.probAway + '%)</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="stats-grid">' +
+          '<div class="stat-card"><div class="stat-val">' + match.homeXg + ' - ' + match.awayXg + '</div><div class="stat-lbl">Beklenen Gol (xG)</div></div>' +
+          '<div class="stat-card"><div class="stat-val">' + match.bestPick + '</div><div class="stat-lbl">Önerilen AI Bahis Tercihi</div></div>' +
+        '</div>' +
+        '<div class="analysis-text"><strong style="color:#38bdf8;">🧠 Yapay Zeka Taktiksel Yorumu:</strong><br/>' + match.comment + '</div>';
+
+      document.getElementById('matchModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      var modal = document.getElementById('matchModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function filterTable() {
+      var q = document.getElementById('searchInput').value.toLowerCase();
+      var filtered = [];
+      for (var i = 0; i < matches.length; i++) {
+        var m = matches[i];
+        if (m.home.toLowerCase().indexOf(q) !== -1 || 
+            m.away.toLowerCase().indexOf(q) !== -1 || 
+            m.league.toLowerCase().indexOf(q) !== -1) {
+          filtered.push(m);
+        }
+      }
+      renderTable(filtered);
+    }
+
+    window.onclick = function(e) {
+      var modal = document.getElementById('matchModal');
+      if (e.target === modal) {
+        closeModal();
+      }
+    };
+
+    // SAYFA YÜKLENDİĞİNDE TABLOLARI DOLDUR
+    window.onload = function() {
+      renderTable(matches);
+      renderStandings();
+    };
+  </script>
+</body>
+</html>
