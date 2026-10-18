@@ -41,6 +41,7 @@
       overflow-x: auto; 
       -webkit-overflow-scrolling: touch;
       border: 1px solid #334155; 
+      margin-bottom: 40px;
     }
     table { width: 100%; border-collapse: collapse; text-align: left; min-width: 750px; }
     thead { background-color: #0f172a; border-bottom: 2px solid #334155; }
@@ -52,6 +53,15 @@
     .derby-badge { background-color: #ef4444; color: #ffffff; padding: 2px 7px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; margin-left: 6px; }
     .league-badge { background-color: #334155; color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; }
     .action-btn { background-color: #0284c7; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; display: inline-block; }
+
+    /* PUAN DURUMU BÖLÜMÜ STİLLERİ */
+    .section-title { width: 100%; max-width: 950px; text-align: left; font-size: 1.3rem; color: #38bdf8; margin-bottom: 15px; border-left: 4px solid #38bdf8; padding-left: 10px; }
+    .standings-table { min-width: 600px; }
+    .standings-table th { text-align: center; }
+    .standings-table td { text-align: center; }
+    .standings-table td.team-cell { text-align: left; font-weight: bold; }
+    .top-three { background-color: rgba(16, 185, 129, 0.1); }
+    .relegation-zone { background-color: rgba(239, 68, 68, 0.1); }
 
     /* MODAL */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; backdrop-filter: blur(4px); }
@@ -87,6 +97,7 @@
     <input type="text" id="searchInput" class="search-input" placeholder="Takım veya Lig ismi ile ara..." onkeyup="filterTable()">
   </div>
 
+  <!-- HAFTALIK MAÇ TAHMİNLERİ TABLOSU -->
   <div class="table-container">
     <table id="matchTable">
       <thead>
@@ -104,6 +115,29 @@
     </table>
   </div>
 
+  <!-- SÜPER LİG PUAN DURUMU BÖLÜMÜ -->
+  <div class="section-title">🏆 Trendyol Süper Lig Puan Durumu</div>
+  <div class="table-container">
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th>Sıra</th>
+          <th style="text-align:left;">Takım</th>
+          <th>O</th>
+          <th>G</th>
+          <th>B</th>
+          <th>M</th>
+          <th>AG</th>
+          <th>YG</th>
+          <th>AV</th>
+          <th>P</th>
+        </tr>
+      </thead>
+      <tbody id="standingsBody"></tbody>
+    </table>
+  </div>
+
+  <!-- MODAL WINDOW -->
   <div class="modal-overlay" id="matchModal">
     <div class="modal-card">
       <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -144,6 +178,28 @@
       { id: 24, league: "Liga Portugal", date: "26.10.2026 Pazartesi", time: "21:45", home: "CD Santa Clara", away: "Benfica", stadium: "Estadio de Sao Miguel", predScore: "1 - 2", probHome: 22, probDraw: 28, probAway: 50, comment: "Benfica zorlu ada deplasmanından kalite farkıyla galip ayrılır.", homeXg: "0.85", awayXg: "1.75", bestPick: "Maç Sonucu 2", isDerby: false }
     ];
 
+    // SÜPER LİG PUAN DURUMU VERİSİ
+    var standings = [
+      { pos: 1, team: "Galatasaray", o: 8, g: 6, b: 1, m: 1, ag: 17, yg: 11, av: "+6", p: 19 },
+      { pos: 2, team: "Amed SK", o: 8, g: 5, b: 2, m: 1, ag: 18, yg: 9, av: "+9", p: 17 },
+      { pos: 3, team: "Fenerbahçe", o: 8, g: 5, b: 1, m: 2, ag: 22, yg: 6, av: "+16", p: 16 },
+      { pos: 4, team: "Beşiktaş", o: 7, g: 5, b: 0, m: 2, ag: 16, yg: 8, av: "+8", p: 15 },
+      { pos: 5, team: "Trabzonspor", o: 7, g: 4, b: 1, m: 2, ag: 16, yg: 5, av: "+11", p: 13 },
+      { pos: 6, team: "Çorum FK", o: 8, g: 4, b: 1, m: 3, ag: 18, yg: 13, av: "+5", p: 13 },
+      { pos: 7, team: "Kocaelispor", o: 7, g: 4, b: 0, m: 3, ag: 8, yg: 6, av: "+2", p: 12 },
+      { pos: 8, team: "Alanyaspor", o: 8, g: 3, b: 3, m: 2, ag: 8, yg: 9, av: "-1", p: 12 },
+      { pos: 9, team: "Erzurumspor FK", o: 8, g: 3, b: 2, m: 3, ag: 5, yg: 11, av: "-6", p: 11 },
+      { pos: 10, team: "Kasımpaşa SK", o: 7, g: 2, b: 4, m: 1, ag: 8, yg: 8, av: "0", p: 10 },
+      { pos: 11, team: "Çaykur Rizespor", o: 8, g: 3, b: 1, m: 4, ag: 8, yg: 11, av: "-3", p: 10 },
+      { pos: 12, team: "Başakşehir FK", o: 7, g: 2, b: 2, m: 3, ag: 10, yg: 11, av: "-1", p: 8 },
+      { pos: 13, team: "Gaziantep FK", o: 7, g: 2, b: 2, m: 3, ag: 7, yg: 10, av: "-3", p: 8 },
+      { pos: 14, team: "Gençlerbirliği", o: 8, g: 2, b: 2, m: 4, ag: 7, yg: 16, av: "-9", p: 8 },
+      { pos: 15, team: "Göztepe", o: 7, g: 1, b: 3, m: 3, ag: 15, yg: 15, av: "0", p: 6 },
+      { pos: 16, team: "Konyaspor", o: 8, g: 1, b: 2, m: 5, ag: 4, yg: 9, av: "-5", p: 5 },
+      { pos: 17, team: "Samsunspor", o: 7, g: 1, b: 1, m: 5, ag: 6, yg: 15, av: "-9", p: 4 },
+      { pos: 18, team: "Eyüpspor", o: 8, g: 1, b: 0, m: 7, ag: 2, yg: 22, av: "-20", p: 3 }
+    ];
+
     function renderTable(data) {
       var tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
@@ -171,6 +227,36 @@
           '<td><strong>' + m.away + '</strong></td>' +
           '<td>' + m.stadium + derbyTag + '</td>' +
           '<td><span class="action-btn">Analiz İncele</span></td>';
+
+        tbody.appendChild(tr);
+      }
+    }
+
+    function renderStandings() {
+      var tbody = document.getElementById('standingsBody');
+      tbody.innerHTML = '';
+
+      for (var i = 0; i < standings.length; i++) {
+        var s = standings[i];
+        var tr = document.createElement('tr');
+
+        if (s.pos <= 3) {
+          tr.className = 'top-three';
+        } else if (s.pos >= 15) {
+          tr.className = 'relegation-zone';
+        }
+
+        tr.innerHTML = 
+          '<td>' + s.pos + '</td>' +
+          '<td class="team-cell">' + s.team + '</td>' +
+          '<td>' + s.o + '</td>' +
+          '<td>' + s.g + '</td>' +
+          '<td>' + s.b + '</td>' +
+          '<td>' + s.m + '</td>' +
+          '<td>' + s.ag + '</td>' +
+          '<td>' + s.yg + '</td>' +
+          '<td>' + s.av + '</td>' +
+          '<td><strong>' + s.p + '</strong></td>';
 
         tbody.appendChild(tr);
       }
@@ -241,6 +327,7 @@
     };
 
     renderTable(matches);
+    renderStandings();
   </script>
 </body>
 </html>
