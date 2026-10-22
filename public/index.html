@@ -6,12 +6,15 @@
     <title>Global Futbol Karşılaşmaları Haftalık Tahminleri</title>
     <style>
         :root {
-            --bg-color: #0f172a;
+            --bg-color: #0b1120;
             --card-bg: #1e293b;
+            --card-border: #334155;
             --text-color: #f8fafc;
             --accent-color: #38bdf8;
-            --border-color: #334155;
             --hover-bg: #1e293b;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #eab308;
         }
 
         body {
@@ -44,10 +47,10 @@
 
         .table-responsive {
             overflow-x: auto;
-            background-color: var(--card-bg);
+            background-color: #111827;
             border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         table {
@@ -58,28 +61,29 @@
         }
 
         th {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: #1f2937;
             padding: 14px 16px;
             font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--card-border);
             color: var(--accent-color);
         }
 
         td {
             padding: 14px 16px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--card-border);
         }
 
-        tr:last-child td {
-            border-bottom: none;
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        tr:hover {
-            background-color: rgba(255, 255, 255, 0.02);
+        tbody tr:hover {
+            background-color: rgba(56, 189, 248, 0.08);
         }
 
         .badge {
-            background-color: rgba(56, 189, 248, 0.1);
+            background-color: rgba(56, 189, 248, 0.15);
             color: var(--accent-color);
             padding: 4px 8px;
             border-radius: 6px;
@@ -90,13 +94,188 @@
         .team {
             font-weight: 600;
         }
+
+        /* --- MODAL (FOOTYSTATS BENZERİ DETAY SAYFASI) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .modal-card {
+            background: #182234;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: #fff;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .match-matchup {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            background: #0f172a;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .team-box {
+            flex: 1;
+        }
+
+        .team-box h4 {
+            margin: 0 0 6px 0;
+            font-size: 1.1rem;
+        }
+
+        .vs-box {
+            padding: 0 15px;
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .form-dots {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .dot.W { background-color: var(--success); }
+        .dot.D { background-color: var(--warning); color: #000; }
+        .dot.L { background-color: var(--danger); }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #1e293b;
+        }
+
+        .stat-card span {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .stat-card strong {
+            font-size: 1.1rem;
+            color: #38bdf8;
+        }
+
+        .prob-bar-container {
+            margin-bottom: 20px;
+        }
+
+        .prob-title {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .prob-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 6px;
+            overflow: hidden;
+            font-size: 0.75rem;
+            font-weight: bold;
+            line-height: 24px;
+            text-align: center;
+        }
+
+        .prob-bar .home { background: #3b82f6; color: #fff; }
+        .prob-bar .draw { background: #64748b; color: #fff; }
+        .prob-bar .away { background: #ef4444; color: #fff; }
+
+        .ai-note {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>Global Futbol Karşılaşmaları Haftalık Tahminleri</h1>
-        <p>🤖 Süper Lig 9. Hafta AI Analizi & Karşılaşma Programı</p>
+        <p>🤖 Süper Lig 9. Hafta AI Analizi & Karşılaşma Programı (Detaylar İçin Maça Tıklayın)</p>
     </div>
 
     <div class="container">
@@ -113,92 +292,147 @@
                         <th>AI Analiz</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>23.10.2026</td>
-                        <td>20:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Corendon Alanyaspor</td>
-                        <td class="team">Kocaelispor</td>
-                        <td>Alanya Oba Stadyumu</td>
-                        <td>Dengeli maç (MS 1 - %45)</td>
-                    </tr>
-                    <tr>
-                        <td>24.10.2026</td>
-                        <td>13:30</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Eyüpspor</td>
-                        <td class="team">Kasımpaşa SK</td>
-                        <td>Necmi Kadıoğlu Stadyumu</td>
-                        <td>Ev sahibi avantajı (MS 1)</td>
-                    </tr>
-                    <tr>
-                        <td>24.10.2026</td>
-                        <td>16:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Gaziantep FK</td>
-                        <td class="team">Erzurumspor FK</td>
-                        <td>Gaziantep Stadyumu</td>
-                        <td>KG Var / Üst 2.5</td>
-                    </tr>
-                    <tr>
-                        <td>24.10.2026</td>
-                        <td>19:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Samsunspor</td>
-                        <td class="team">Amed SF</td>
-                        <td>Samsun Yeni 19 Mayıs Stadyumu</td>
-                        <td>Yüksek tempolu maç (MS 1)</td>
-                    </tr>
-                    <tr>
-                        <td>25.10.2026</td>
-                        <td>16:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">TÜMOSAN Konyaspor</td>
-                        <td class="team">Gençlerbirliği</td>
-                        <td>Konya Büyükşehir Stadyumu</td>
-                        <td>Az gol ihtimali (Alt 2.5)</td>
-                    </tr>
-                    <tr>
-                        <td>25.10.2026</td>
-                        <td>19:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Göztepe</td>
-                        <td class="team">Arca Çorum FK</td>
-                        <td>Gürsel Aksel Stadyumu</td>
-                        <td>Ev sahibi baskılı başlar (MS 1)</td>
-                    </tr>
-                    <tr>
-                        <td>26.10.2026</td>
-                        <td>19:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Çaykur Rizespor</td>
-                        <td class="team">Trabzonspor</td>
-                        <td>Çaykur Didi Stadyumu</td>
-                        <td>Karadeniz Derbisi (MS 2)</td>
-                    </tr>
-                    <tr>
-                        <td>26.10.2026</td>
-                        <td>19:00</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Beşiktaş</td>
-                        <td class="team">İstanbul Başakşehir FK</td>
-                        <td>Tüpraş Stadyumu</td>
-                        <td>Çekişmeli mücadele (MS 1 & KG Var)</td>
-                    </tr>
-                    <tr>
-                        <td>26.10.2026</td>
-                        <td>21:30</td>
-                        <td><span class="badge">Süper Lig</span></td>
-                        <td class="team">Galatasaray</td>
-                        <td class="team">Fenerbahçe</td>
-                        <td>RAMS Park</td>
-                        <td>Dev Derbi (KG Var / Üst 2.5)</td>
-                    </tr>
+                <tbody id="match-list">
+                    <!-- JavaScript Dinamik Dolduracak -->
                 </tbody>
             </table>
         </div>
     </div>
 
+    <!-- MODAL DETAY PENCERESİ -->
+    <div class="modal-overlay" id="matchModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalLeague">Trendyol Süper Lig - AI Analiz Raporu</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="match-matchup">
+                    <div class="team-box">
+                        <h4 id="modalHome">Ev Sahibi</h4>
+                        <div class="form-dots" id="homeForm"></div>
+                    </div>
+                    <div class="vs-box">VS</div>
+                    <div class="team-box">
+                        <h4 id="modalAway">Deplasman</h4>
+                        <div class="form-dots" id="awayForm"></div>
+                    </div>
+                </div>
+
+                <div class="prob-title">🤖 Yapay Zeka Galibiyet İhtimalleri</div>
+                <div class="prob-bar-container">
+                    <div class="prob-bar">
+                        <div class="home" id="barHome" style="width: 40%;">40%</div>
+                        <div class="draw" id="barDraw" style="width: 30%;">30%</div>
+                        <div class="away" id="barAway" style="width: 30%;">30%</div>
+                    </div>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <span>Beklenen Gol (xG)</span>
+                        <strong id="statXG">2.45</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span>2.5 Üst İhtimali</span>
+                        <strong id="statOver">%62</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span>Karşılıklı Gol</span>
+                        <strong id="statBTTS">%58 (Var)</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span>Ort. Korner</span>
+                        <strong id="statCorner">9.8</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span>Ort. Kart</span>
+                        <strong id="statCard">4.5</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span>Muhtemel Skor</span>
+                        <strong id="statScore">2 - 1</strong>
+                    </div>
+                </div>
+
+                <div class="ai-note">
+                    <strong>💡 AI Maç Yorumu:</strong> <span id="modalAiNote"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const matches = [
+            { id: 1, date: "23.10.2026", time: "20:00", home: "Corendon Alanyaspor", away: "Kocaelispor", stadium: "Alanya Oba Stadyumu", ai: "Dengeli maç (MS 1 - %45)", homeForm: ["W","D","L","W","D"], awayForm: ["L","W","D","L","W"], prob: [45, 30, 25], xG: "2.30", over: "%52", btts: "%55 (Var)", corner: "9.2", card: "4.1", score: "2 - 1", comment: "Alanyaspor evinde topa sahip olma oranında üstünlük kurabilir. Kocaelispor geçiş hücumlarında etkili ancak Alanya'nın savunma direnci yüksek." },
+            { id: 2, date: "24.10.2026", time: "13:30", home: "Eyüpspor", away: "Kasımpaşa SK", stadium: "Necmi Kadıoğlu Stadyumu", ai: "Ev sahibi avantajı (MS 1)", homeForm: ["W","W","D","L","W"], awayForm: ["D","L","L","W","L"], prob: [55, 25, 20], xG: "2.75", over: "%68", btts: "%60 (Var)", corner: "10.4", card: "3.8", score: "3 - 1", comment: "Eyüpspor hücum hattında yüksek form grafiğine sahip. Kasımpaşa kulübü deplasmanda açıklar veriyor." },
+            { id: 3, date: "24.10.2026", time: "16:00", home: "Gaziantep FK", away: "Erzurumspor FK", stadium: "Gaziantep Stadyumu", ai: "KG Var / Üst 2.5", homeForm: ["D","L","W","W","L"], awayForm: ["W","D","L","D","W"], prob: [40, 32, 28], xG: "2.85", over: "%70", btts: "%65 (Var)", corner: "11.1", card: "5.2", score: "2 - 2", comment: "İki takım da skoru korumakta zorlanıyor. Tempolu ve karşılıklı gollerin olduğu bir maç bekleniyor." },
+            { id: 4, date: "24.10.2026", time: "19:00", home: "Samsunspor", away: "Amed SF", stadium: "Samsun Yeni 19 Mayıs Stadyumu", ai: "Yüksek tempolu maç (MS 1)", homeForm: ["W","W","W","D","L"], awayForm: ["D","W","L","D","W"], prob: [58, 24, 18], xG: "2.60", over: "%64", btts: "%50 (Yok)", corner: "9.8", card: "4.7", score: "2 - 0", comment: "Samsunspor evinde taraftar desteğiyle baskılı başlayan taraf olacaktır." },
+            { id: 5, date: "25.10.2026", time: "16:00", home: "TÜMOSAN Konyaspor", away: "Gençlerbirliği", stadium: "Konya Büyükşehir Stadyumu", ai: "Az gol ihtimali (Alt 2.5)", homeForm: ["D","D","L","W","D"], awayForm: ["L","D","D","L","W"], prob: [38, 38, 24], xG: "1.70", over: "%35", btts: "%40 (Yok)", corner: "8.1", card: "3.5", score: "1 - 0", comment: "İki takımın da orta saha mücadelesine dayalı, taktiksel ve düşük tempolu bir futbol sergilemesi bekleniyor." },
+            { id: 6, date: "25.10.2026", time: "19:00", home: "Göztepe", away: "Arca Çorum FK", stadium: "Gürsel Aksel Stadyumu", ai: "Ev sahibi baskılı başlar (MS 1)", homeForm: ["W","L","W","W","D"], awayForm: ["L","L","D","W","L"], prob: [62, 22, 16], xG: "2.90", over: "%72", btts: "%48 (Yok)", corner: "10.8", card: "4.0", score: "3 - 0", comment: "Göztepe seyircisi önünde maça fırtına gibi başlayacaktır. Çorum FK savunmada zorlanabilir." },
+            { id: 7, date: "26.10.2026", time: "19:00", home: "Çaykur Rizespor", away: "Trabzonspor", stadium: "Çaykur Didi Stadyumu", ai: "Karadeniz Derbisi (MS 2)", homeForm: ["L","W","D","L","L"], awayForm: ["W","W","D","W","D"], prob: [25, 30, 45], xG: "2.55", over: "%58", btts: "%62 (Var)", corner: "9.5", card: "6.1", score: "1 - 2", comment: "Geleneksel Karadeniz rekabetinde Trabzonspor kadro kalitesi ve form durumuyla bir adım önde." },
+            { id: 8, date: "26.10.2026", time: "19:00", home: "Beşiktaş", away: "İstanbul Başakşehir FK", stadium: "Tüpraş Stadyumu", ai: "Çekişmeli mücadele (MS 1 & KG Var)", homeForm: ["W","W","D","W","W"], awayForm: ["D","W","W","L","D"], prob: [52, 28, 20], xG: "3.10", over: "%75", btts: "%68 (Var)", corner: "11.5", card: "4.8", score: "2 - 1", comment: "Beşiktaş Dolmabahçe'de hücum hattında çok üretken. Başakşehir ise kontrataklarda tehlike oluşturacaktır." },
+            { id: 9, date: "26.10.2026", time: "21:30", home: "Galatasaray", away: "Fenerbahçe", stadium: "RAMS Park", ai: "Dev Derbi (KG Var / Üst 2.5)", homeForm: ["W","W","W","W","D"], awayForm: ["W","W","D","W","W"], prob: [42, 30, 28], xG: "3.40", over: "%80", btts: "%78 (Var)", corner: "12.0", card: "6.8", score: "2 - 2", comment: "Haftanın ve ligin en büyük derbisi. Yüksek tempo, yoğun kart beklentisi ve karşılıklı bol gol pozisyonu öngörülüyor." }
+        ];
+
+        function renderMatches() {
+            const tbody = id => document.getElementById(id);
+            tbody('match-list').innerHTML = matches.map(m => `
+                <tr onclick="openModal(${m.id})">
+                    <td>${m.date}</td>
+                    <td>${m.time}</td>
+                    <td><span class="badge">Süper Lig</span></td>
+                    <td class="team">${m.home}</td>
+                    <td class="team">${m.away}</td>
+                    <td>${m.stadium}</td>
+                    <td>${m.ai}</td>
+                </tr>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const m = matches.find(x => x.id === id);
+            if(!m) return;
+
+            document.getElementById('modalHome').innerText = m.home;
+            document.getElementById('modalAway').innerText = m.away;
+            document.getElementById('modalAiNote').innerText = m.comment;
+
+            document.getElementById('statXG').innerText = m.xG;
+            document.getElementById('statOver').innerText = m.over;
+            document.getElementById('statBTTS').innerText = m.btts;
+            document.getElementById('statCorner').innerText = m.corner;
+            document.getElementById('statCard').innerText = m.card;
+            document.getElementById('statScore').innerText = m.score;
+
+            // Form İkonları
+            document.getElementById('homeForm').innerHTML = m.homeForm.map(f => `<span class="dot ${f}">${f}</span>`).join('');
+            document.getElementById('awayForm').innerHTML = m.awayForm.map(f => `<span class="dot ${f}">${f}</span>`).join('');
+
+            // İhtimal Barları
+            const bHome = document.getElementById('barHome');
+            const bDraw = document.getElementById('barDraw');
+            const bAway = document.getElementById('barAway');
+
+            bHome.style.width = m.prob[0] + "%"; bHome.innerText = m.prob[0] + "% MS1";
+            bDraw.style.width = m.prob[1] + "%"; bDraw.innerText = m.prob[1] + "% X";
+            bAway.style.width = m.prob[2] + "%"; bAway.innerText = m.prob[2] + "% MS2";
+
+            document.getElementById('matchModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('matchModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('matchModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        renderMatches();
+    </script>
 </body>
 </html>
