@@ -45,6 +45,15 @@
             margin: 0 auto;
         }
 
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin: 40px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .table-responsive {
             overflow-x: auto;
             background-color: #111827;
@@ -95,7 +104,7 @@
             font-weight: 600;
         }
 
-        /* --- MODAL DETAY PENCERESİ --- */
+        /* --- MODAL PENCERE (GENEL & TAKIM) --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -275,10 +284,12 @@
 
     <div class="header">
         <h1>Global Futbol Karşılaşmaları Haftalık Tahminleri</h1>
-        <p>🤖 Süper Lig 10. Hafta AI Analizi & Karşılaşma Programı (Detaylar İçin Maça Tıklayın)</p>
+        <p>🤖 Süper Lig 10. Hafta AI Analizi & Karşılaşma Programı</p>
     </div>
 
     <div class="container">
+        <!-- MAÇLAR TABLOSU -->
+        <div class="section-title">📅 10. Hafta Maç Programı ve AI Tahminleri (Detay İçin Tıklayın)</div>
         <div class="table-responsive">
             <table>
                 <thead>
@@ -293,18 +304,42 @@
                     </tr>
                 </thead>
                 <tbody id="match-list">
-                    <!-- JavaScript Dinamik Dolduracak -->
+                    <!-- JS Dolduracak -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PUAN DURUMU TABLOSU -->
+        <div class="section-title">🏆 Trendyol Süper Lig Puan Durumu (Detaylar İçin Takıma Tıklayın)</div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sıra</th>
+                        <th>Takım</th>
+                        <th>O</th>
+                        <th>G</th>
+                        <th>B</th>
+                        <th>M</th>
+                        <th>AG</th>
+                        <th>YG</th>
+                        <th>AV</th>
+                        <th>P</th>
+                    </tr>
+                </thead>
+                <tbody id="standings-list">
+                    <!-- JS Dolduracak -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- MODAL DETAY PENCERESİ -->
+    <!-- MAÇ DETAY MODALI -->
     <div class="modal-overlay" id="matchModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="modalLeague">Trendyol Süper Lig 10. Hafta - AI Raporu</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <h3>Trendyol Süper Lig - AI Maç Raporu</h3>
+                <button class="close-btn" onclick="closeModal('matchModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="match-matchup">
@@ -329,34 +364,47 @@
                 </div>
 
                 <div class="stat-grid">
-                    <div class="stat-card">
-                        <span>Beklenen Gol (xG)</span>
-                        <strong id="statXG">2.80</strong>
-                    </div>
-                    <div class="stat-card">
-                        <span>2.5 Üst İhtimali</span>
-                        <strong id="statOver">%65</strong>
-                    </div>
-                    <div class="stat-card">
-                        <span>Karşılıklı Gol</span>
-                        <strong id="statBTTS">%55 (Var)</strong>
-                    </div>
-                    <div class="stat-card">
-                        <span>Ort. Korner</span>
-                        <strong id="statCorner">9.5</strong>
-                    </div>
-                    <div class="stat-card">
-                        <span>Ort. Kart</span>
-                        <strong id="statCard">4.2</strong>
-                    </div>
-                    <div class="stat-card">
-                        <span>Muhtemel Skor</span>
-                        <strong id="statScore">1 - 2</strong>
-                    </div>
+                    <div class="stat-card"><span>Beklenen Gol (xG)</span><strong id="statXG">2.80</strong></div>
+                    <div class="stat-card"><span>2.5 Üst İhtimali</span><strong id="statOver">%65</strong></div>
+                    <div class="stat-card"><span>Karşılıklı Gol</span><strong id="statBTTS">%55 (Var)</strong></div>
+                    <div class="stat-card"><span>Ort. Korner</span><strong id="statCorner">9.5</strong></div>
+                    <div class="stat-card"><span>Ort. Kart</span><strong id="statCard">4.2</strong></div>
+                    <div class="stat-card"><span>Muhtemel Skor</span><strong id="statScore">1 - 2</strong></div>
                 </div>
 
                 <div class="ai-note">
                     <strong>💡 AI Maç Yorumu:</strong> <span id="modalAiNote"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAKIM İSTATİSTİK MODALI -->
+    <div class="modal-overlay" id="teamModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="teamModalTitle">Takım AI Analiz Raporu</h3>
+                <button class="close-btn" onclick="closeModal('teamModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="match-matchup">
+                    <div class="team-box">
+                        <h4 id="teamModalName">Takım Adı</h4>
+                        <div class="form-dots" id="teamForm"></div>
+                    </div>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-card"><span>Maç Başı Gol</span><strong id="tStatGPG">1.8</strong></div>
+                    <div class="stat-card"><span>Yenilen Gol Ort.</span><strong id="tStatGA">0.9</strong></div>
+                    <div class="stat-card"><span>Topla Oynama</span><strong id="tStatPoss">%58</strong></div>
+                    <div class="stat-card"><span>Kale Bulan Şut</span><strong id="tStatShots">5.4</strong></div>
+                    <div class="stat-card"><span>Gol Yemediği Maç</span><strong id="tStatCS">4</strong></div>
+                    <div class="stat-card"><span>Şampiyonluk İhtimali</span><strong id="tStatTitleProb">%35</strong></div>
+                </div>
+
+                <div class="ai-note">
+                    <strong>📊 Yapay Zeka Takım Değerlendirmesi:</strong> <span id="teamAiNote"></span>
                 </div>
             </div>
         </div>
@@ -375,10 +423,32 @@
             { id: 9, date: "02.11.2026", time: "20:00", home: "Gençlerbirliği", away: "Corendon Alanyaspor", stadium: "Eryaman Stadyumu", ai: "Düşük Tempo (Alt 2.5)", homeForm: ["L","L","D","D","L"], awayForm: ["L","L","W","D","L"], prob: [35, 36, 29], xG: "1.85", over: "%38", btts: "%44 (Yok)", corner: "8.4", card: "4.3", score: "1 - 1", comment: "İki tarafın da öncelikle savunma güvenliğini ön planda tutması bekleniyor." }
         ];
 
+        // 27 EKİM 2026 İTİBARIYLA GÜNCEL SÜPER LİG PUAN DURUMU & AI TAKIM İSTATİSTİKLERİ
+        const standings = [
+            { pos: 1, name: "Galatasaray", o: 9, g: 7, b: 2, m: 0, ag: 22, yg: 7, av: 15, p: 23, form: ["W","W","W","W","D"], gpg: "2.4", ga: "0.7", poss: "%64", shots: "6.8", cs: "5", titleProb: "%54", note: "Yüksek ön alan baskısı ve hücum verimliliğiyle ligin en formda takımı konumunda." },
+            { pos: 2, name: "Fenerbahçe", o: 9, g: 6, b: 2, m: 1, ag: 19, yg: 8, av: 11, p: 20, form: ["L","W","W","D","W"], gpg: "2.1", ga: "0.8", poss: "%61", shots: "6.2", cs: "4", titleProb: "%32", note: "İç saha maçlarında yüksek gol beklentisi üretiyor, kanat organizasyonları son derece etkili." },
+            { pos: 3, name: "Trabzonspor", o: 9, g: 5, b: 3, m: 1, ag: 16, yg: 9, av: 7, p: 18, form: ["W","W","D","W","D"], gpg: "1.7", ga: "1.0", poss: "%55", shots: "5.1", cs: "3", titleProb: "%9", note: "Savunma disiplini ön planda. Papara Park deplasman takımları için son derece zor." },
+            { pos: 4, name: "Beşiktaş", o: 9, g: 5, b: 2, m: 2, ag: 17, yg: 11, av: 6, p: 17, form: ["W","L","W","W","D"], gpg: "1.8", ga: "1.2", poss: "%57", shots: "5.6", cs: "3", titleProb: "%5", note: "Hücum hattında üretken ancak savunma geçişlerinde alan bırakabiliyor." },
+            { pos: 5, name: "Samsunspor", o: 9, g: 5, b: 1, m: 3, ag: 14, yg: 10, av: 4, p: 16, form: ["W","W","W","D","L"], gpg: "1.5", ga: "1.1", poss: "%50", shots: "4.8", cs: "4", titleProb: "%0.5", note: "Fiziksel gücü yüksek, orta saha ikili mücadele kazanma oranı lig ortalamasının üzerinde." },
+            { pos: 6, name: "Göztepe", o: 9, g: 4, b: 3, m: 2, ag: 13, yg: 9, av: 4, p: 15, form: ["W","L","W","W","D"], gpg: "1.4", ga: "1.0", poss: "%48", shots: "4.2", cs: "4", titleProb: "%0.2", note: "İç sahada taraftar desteğiyle agresif duran top ve köşe vuruşu organizasyonlarında başarılı." },
+            { pos: 7, name: "Amed SF", o: 9, g: 4, b: 2, m: 3, ag: 12, yg: 10, av: 2, p: 14, form: ["L","D","W","L","W"], gpg: "1.3", ga: "1.1", poss: "%51", shots: "4.5", cs: "3", titleProb: "%0.1", note: "İç sahada yenilmesi zor bir yapıya sahip. Hızlı kanat akınlarıyla etkili oluyor." },
+            { pos: 8, name: "Eyüpspor", o: 9, g: 4, b: 1, m: 4, ag: 13, yg: 13, av: 0, p: 13, form: ["W","W","D","L","W"], gpg: "1.4", ga: "1.4", poss: "%52", shots: "4.3", cs: "2", titleProb: "%0.1", note: "Set hücumlarında başarılı ancak deplasmanlarda gol yeme eğilimi yüksek." },
+            { pos: 9, name: "Kocaelispor", o: 9, g: 3, b: 3, m: 3, ag: 11, yg: 12, av: -1, p: 12, form: ["D","L","W","D","L"], gpg: "1.2", ga: "1.3", poss: "%46", shots: "3.9", cs: "2", titleProb: "%0.0", note: "Geçiş oyununu tercih ediyor, dar alanda kontra atak tehlikesi yaratabiliyor." },
+            { pos: 10, name: "Kasımpaşa SK", o: 9, g: 3, b: 2, m: 4, ag: 12, yg: 15, av: -3, p: 11, form: ["L","W","L","W","D"], gpg: "1.3", ga: "1.6", poss: "%49", shots: "4.1", cs: "1", titleProb: "%0.0", note: "Açık ve tempolu futbolu benimsiyor, maçlarında bol gol ve korner çıkıyor." },
+            { pos: 11, name: "İstanbul Başakşehir FK", o: 9, g: 3, b: 2, m: 4, ag: 10, yg: 13, av: -3, p: 11, form: ["L","L","W","D","W"], gpg: "1.1", ga: "1.4", poss: "%56", shots: "3.8", cs: "2", titleProb: "%0.0", note: "Geriden oyun kurma temposu yüksek ancak ceza sahası içi bitiricilik oranında zorlanıyor." },
+            { pos: 12, name: "TÜMOSAN Konyaspor", o: 9, g: 2, b: 4, m: 3, ag: 9, yg: 11, av: -2, p: 10, form: ["L","D","D","L","W"], gpg: "1.0", ga: "1.2", poss: "%47", shots: "3.5", cs: "2", titleProb: "%0.0", note: "Savunma hattını kalabalık tutup maçı düşük tempoda tutmayı hedefliyor." },
+            { pos: 13, name: "Corendon Alanyaspor", o: 9, g: 2, b: 4, m: 3, ag: 9, yg: 12, av: -3, p: 10, form: ["W","D","L","W","D"], gpg: "1.0", ga: "1.3", poss: "%53", shots: "3.7", cs: "2", titleProb: "%0.0", note: "Pas yüzdesi yüksek ancak ceza sahasına dikine girişlerde üretkenliği sınırlı." },
+            { pos: 14, name: "Erzurumspor FK", o: 9, g: 2, b: 3, m: 4, ag: 8, yg: 12, av: -4, p: 9, form: ["D","W","D","L","D"], gpg: "0.8", ga: "1.3", poss: "%43", shots: "3.1", cs: "2", titleProb: "%0.0", note: "Fiziksel temaslı oyun yapısıyla rakiplerinin temposunu düşürmede etkili." },
+            { pos: 15, name: "Gaziantep FK", o: 9, g: 2, b: 2, m: 5, ag: 10, yg: 16, av: -6, p: 8, form: ["D","L","W","W","L"], gpg: "1.1", ga: "1.7", poss: "%44", shots: "3.6", cs: "1", titleProb: "%0.0", note: "Savunma arkasına atılan uzun toplarla fırsat arıyor, kalesinde çok pozisyon veriyor." },
+            { pos: 16, name: "Çaykur Rizespor", o: 9, g: 2, b: 1, m: 6, ag: 8, yg: 15, av: -7, p: 7, form: ["L","L","D","L","L"], gpg: "0.8", ga: "1.6", poss: "%45", shots: "3.3", cs: "1", titleProb: "%0.0", note: "Deplasman performansında kırılgan. Gol yediğinde reaksiyon vermekte zorlanıyor." },
+            { pos: 17, name: "Gençlerbirliği", o: 9, g: 1, b: 3, m: 5, ag: 7, yg: 14, av: -7, p: 6, form: ["L","D","D","L","L"], gpg: "0.7", ga: "1.5", poss: "%42", shots: "2.9", cs: "1", titleProb: "%0.0", note: "Hücum üretkenliği düşük, duran top organizasyonlarına bağımlı bir grafikte." },
+            { pos: 18, name: "Arca Çorum FK", o: 9, g: 1, b: 1, m: 7, ag: 6, yg: 18, av: -12, p: 4, form: ["L","L","L","D","W"], gpg: "0.6", ga: "2.0", poss: "%40", shots: "2.7", cs: "0", titleProb: "%0.0", note: "Savunma çizgisinde derinlik problemi yaşıyor, ligin en çok gol yiyen ekibi." }
+        ];
+
         function renderMatches() {
             const tbody = document.getElementById('match-list');
             tbody.innerHTML = matches.map(m => `
-                <tr onclick="openModal(${m.id})">
+                <tr onclick="openMatchModal(${m.id})">
                     <td>${m.date}</td>
                     <td>${m.time}</td>
                     <td><span class="badge">Süper Lig</span></td>
@@ -390,7 +460,25 @@
             `).join('');
         }
 
-        function openModal(id) {
+        function renderStandings() {
+            const tbody = document.getElementById('standings-list');
+            tbody.innerHTML = standings.map(s => `
+                <tr onclick="openTeamModal(${s.pos})">
+                    <td><strong>${s.pos}</strong></td>
+                    <td class="team">${s.name}</td>
+                    <td>${s.o}</td>
+                    <td>${s.g}</td>
+                    <td>${s.b}</td>
+                    <td>${s.m}</td>
+                    <td>${s.ag}</td>
+                    <td>${s.yg}</td>
+                    <td>${s.av > 0 ? '+' + s.av : s.av}</td>
+                    <td><strong>${s.p}</strong></td>
+                </tr>
+            `).join('');
+        }
+
+        function openMatchModal(id) {
             const m = matches.find(x => x.id === id);
             if(!m) return;
 
@@ -419,18 +507,38 @@
             document.getElementById('matchModal').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('matchModal').style.display = 'none';
+        function openTeamModal(pos) {
+            const t = standings.find(x => x.pos === pos);
+            if(!t) return;
+
+            document.getElementById('teamModalTitle').innerText = `${t.name} - AI Analiz & İstatistik`;
+            document.getElementById('teamModalName').innerText = `${t.pos}. ${t.name} (${t.p} Puan)`;
+            document.getElementById('teamForm').innerHTML = t.form.map(f => `<span class="dot ${f}">${f}</span>`).join('');
+
+            document.getElementById('tStatGPG').innerText = t.gpg;
+            document.getElementById('tStatGA').innerText = t.ga;
+            document.getElementById('tStatPoss').innerText = t.poss;
+            document.getElementById('tStatShots').innerText = t.shots;
+            document.getElementById('tStatCS').innerText = t.cs;
+            document.getElementById('tStatTitleProb').innerText = t.titleProb;
+
+            document.getElementById('teamAiNote').innerText = t.note;
+
+            document.getElementById('teamModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
         window.onclick = function(event) {
-            const modal = document.getElementById('matchModal');
-            if (event.target === modal) {
-                closeModal();
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
             }
         }
 
         renderMatches();
+        renderStandings();
     </script>
 </body>
 </html>
