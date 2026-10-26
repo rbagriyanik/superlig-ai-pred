@@ -95,7 +95,7 @@
             font-weight: 600;
         }
 
-        /* --- MODAL (FOOTYSTATS BENZERİ DETAY SAYFASI) --- */
+        /* --- MODAL DETAY PENCERESİ --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -275,7 +275,7 @@
 
     <div class="header">
         <h1>Global Futbol Karşılaşmaları Haftalık Tahminleri</h1>
-        <p>🤖 Süper Lig 9. Hafta AI Analizi & Karşılaşma Programı (Detaylar İçin Maça Tıklayın)</p>
+        <p>🤖 Süper Lig 10. Hafta AI Analizi & Karşılaşma Programı (Detaylar İçin Maça Tıklayın)</p>
     </div>
 
     <div class="container">
@@ -303,7 +303,7 @@
     <div class="modal-overlay" id="matchModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="modalLeague">Trendyol Süper Lig - AI Analiz Raporu</h3>
+                <h3 id="modalLeague">Trendyol Süper Lig 10. Hafta - AI Raporu</h3>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -331,27 +331,27 @@
                 <div class="stat-grid">
                     <div class="stat-card">
                         <span>Beklenen Gol (xG)</span>
-                        <strong id="statXG">2.45</strong>
+                        <strong id="statXG">2.80</strong>
                     </div>
                     <div class="stat-card">
                         <span>2.5 Üst İhtimali</span>
-                        <strong id="statOver">%62</strong>
+                        <strong id="statOver">%65</strong>
                     </div>
                     <div class="stat-card">
                         <span>Karşılıklı Gol</span>
-                        <strong id="statBTTS">%58 (Var)</strong>
+                        <strong id="statBTTS">%55 (Var)</strong>
                     </div>
                     <div class="stat-card">
                         <span>Ort. Korner</span>
-                        <strong id="statCorner">9.8</strong>
+                        <strong id="statCorner">9.5</strong>
                     </div>
                     <div class="stat-card">
                         <span>Ort. Kart</span>
-                        <strong id="statCard">4.5</strong>
+                        <strong id="statCard">4.2</strong>
                     </div>
                     <div class="stat-card">
                         <span>Muhtemel Skor</span>
-                        <strong id="statScore">2 - 1</strong>
+                        <strong id="statScore">1 - 2</strong>
                     </div>
                 </div>
 
@@ -364,20 +364,20 @@
 
     <script>
         const matches = [
-            { id: 1, date: "23.10.2026", time: "20:00", home: "Corendon Alanyaspor", away: "Kocaelispor", stadium: "Alanya Oba Stadyumu", ai: "Dengeli maç (MS 1 - %45)", homeForm: ["W","D","L","W","D"], awayForm: ["L","W","D","L","W"], prob: [45, 30, 25], xG: "2.30", over: "%52", btts: "%55 (Var)", corner: "9.2", card: "4.1", score: "2 - 1", comment: "Alanyaspor evinde topa sahip olma oranında üstünlük kurabilir. Kocaelispor geçiş hücumlarında etkili ancak Alanya'nın savunma direnci yüksek." },
-            { id: 2, date: "24.10.2026", time: "13:30", home: "Eyüpspor", away: "Kasımpaşa SK", stadium: "Necmi Kadıoğlu Stadyumu", ai: "Ev sahibi avantajı (MS 1)", homeForm: ["W","W","D","L","W"], awayForm: ["D","L","L","W","L"], prob: [55, 25, 20], xG: "2.75", over: "%68", btts: "%60 (Var)", corner: "10.4", card: "3.8", score: "3 - 1", comment: "Eyüpspor hücum hattında yüksek form grafiğine sahip. Kasımpaşa kulübü deplasmanda açıklar veriyor." },
-            { id: 3, date: "24.10.2026", time: "16:00", home: "Gaziantep FK", away: "Erzurumspor FK", stadium: "Gaziantep Stadyumu", ai: "KG Var / Üst 2.5", homeForm: ["D","L","W","W","L"], awayForm: ["W","D","L","D","W"], prob: [40, 32, 28], xG: "2.85", over: "%70", btts: "%65 (Var)", corner: "11.1", card: "5.2", score: "2 - 2", comment: "İki takım da skoru korumakta zorlanıyor. Tempolu ve karşılıklı gollerin olduğu bir maç bekleniyor." },
-            { id: 4, date: "24.10.2026", time: "19:00", home: "Samsunspor", away: "Amed SF", stadium: "Samsun Yeni 19 Mayıs Stadyumu", ai: "Yüksek tempolu maç (MS 1)", homeForm: ["W","W","W","D","L"], awayForm: ["D","W","L","D","W"], prob: [58, 24, 18], xG: "2.60", over: "%64", btts: "%50 (Yok)", corner: "9.8", card: "4.7", score: "2 - 0", comment: "Samsunspor evinde taraftar desteğiyle baskılı başlayan taraf olacaktır." },
-            { id: 5, date: "25.10.2026", time: "16:00", home: "TÜMOSAN Konyaspor", away: "Gençlerbirliği", stadium: "Konya Büyükşehir Stadyumu", ai: "Az gol ihtimali (Alt 2.5)", homeForm: ["D","D","L","W","D"], awayForm: ["L","D","D","L","W"], prob: [38, 38, 24], xG: "1.70", over: "%35", btts: "%40 (Yok)", corner: "8.1", card: "3.5", score: "1 - 0", comment: "İki takımın da orta saha mücadelesine dayalı, taktiksel ve düşük tempolu bir futbol sergilemesi bekleniyor." },
-            { id: 6, date: "25.10.2026", time: "19:00", home: "Göztepe", away: "Arca Çorum FK", stadium: "Gürsel Aksel Stadyumu", ai: "Ev sahibi baskılı başlar (MS 1)", homeForm: ["W","L","W","W","D"], awayForm: ["L","L","D","W","L"], prob: [62, 22, 16], xG: "2.90", over: "%72", btts: "%48 (Yok)", corner: "10.8", card: "4.0", score: "3 - 0", comment: "Göztepe seyircisi önünde maça fırtına gibi başlayacaktır. Çorum FK savunmada zorlanabilir." },
-            { id: 7, date: "26.10.2026", time: "19:00", home: "Çaykur Rizespor", away: "Trabzonspor", stadium: "Çaykur Didi Stadyumu", ai: "Karadeniz Derbisi (MS 2)", homeForm: ["L","W","D","L","L"], awayForm: ["W","W","D","W","D"], prob: [25, 30, 45], xG: "2.55", over: "%58", btts: "%62 (Var)", corner: "9.5", card: "6.1", score: "1 - 2", comment: "Geleneksel Karadeniz rekabetinde Trabzonspor kadro kalitesi ve form durumuyla bir adım önde." },
-            { id: 8, date: "26.10.2026", time: "19:00", home: "Beşiktaş", away: "İstanbul Başakşehir FK", stadium: "Tüpraş Stadyumu", ai: "Çekişmeli mücadele (MS 1 & KG Var)", homeForm: ["W","W","D","W","W"], awayForm: ["D","W","W","L","D"], prob: [52, 28, 20], xG: "3.10", over: "%75", btts: "%68 (Var)", corner: "11.5", card: "4.8", score: "2 - 1", comment: "Beşiktaş Dolmabahçe'de hücum hattında çok üretken. Başakşehir ise kontrataklarda tehlike oluşturacaktır." },
-            { id: 9, date: "26.10.2026", time: "21:30", home: "Galatasaray", away: "Fenerbahçe", stadium: "RAMS Park", ai: "Dev Derbi (KG Var / Üst 2.5)", homeForm: ["W","W","W","W","D"], awayForm: ["W","W","D","W","W"], prob: [42, 30, 28], xG: "3.40", over: "%80", btts: "%78 (Var)", corner: "12.0", card: "6.8", score: "2 - 2", comment: "Haftanın ve ligin en büyük derbisi. Yüksek tempo, yoğun kart beklentisi ve karşılıklı bol gol pozisyonu öngörülüyor." }
+            { id: 1, date: "30.10.2026", time: "20:00", home: "TÜMOSAN Konyaspor", away: "Galatasaray", stadium: "Konya Büyükşehir Stadyumu", ai: "Zorlu Deplasman (MS 2)", homeForm: ["W","D","D","L","W"], awayForm: ["W","W","W","W","W"], prob: [22, 28, 50], xG: "2.80", over: "%65", btts: "%55 (Var)", corner: "9.5", card: "4.2", score: "1 - 2", comment: "Galatasaray derbi galibiyetinin moral ve motivasyonuyla Konya deplasmanında galibiyet arayacak." },
+            { id: 2, date: "31.10.2026", time: "13:30", home: "Erzurumspor FK", away: "Arca Çorum FK", stadium: "Kazım Karabekir Stadyumu", ai: "Ev Sahibi Formda (MS 1)", homeForm: ["W","W","D","L","D"], awayForm: ["L","L","W","D","L"], prob: [48, 30, 22], xG: "2.10", over: "%45", btts: "%42 (Yok)", corner: "8.8", card: "3.9", score: "2 - 0", comment: "Erzurumspor son haftalardaki yükselişini taraftarı önünde sürdürmek isteyecektir." },
+            { id: 3, date: "31.10.2026", time: "16:00", home: "Kocaelispor", away: "Çaykur Rizespor", stadium: "Yıldız Entegre Kocaeli Stadyumu", ai: "KG Var / Dengeli", homeForm: ["W","L","W","L","D"], awayForm: ["L","L","W","D","L"], prob: [40, 32, 28], xG: "2.50", over: "%58", btts: "%60 (Var)", corner: "9.2", card: "4.5", score: "1 - 1", comment: "İki takımın da hücum hatları etkili ancak savunma zafiyetleri gol ihtimalini yükseltiyor." },
+            { id: 4, date: "31.10.2026", time: "19:00", home: "Fenerbahçe", away: "Göztepe", stadium: "Ülker Stadyumu", ai: "Baskılı Oyun (MS 1)", homeForm: ["L","W","W","D","W"], awayForm: ["W","W","L","W","W"], prob: [58, 25, 17], xG: "3.05", over: "%72", btts: "%50 (Yok)", corner: "10.6", card: "4.8", score: "3 - 1", comment: "Fenerbahçe Kadıköy'de maça hızlı başlayarak telafi galibiyeti arayacaktır." },
+            { id: 5, date: "01.11.2026", time: "13:30", home: "Amed SF", away: "Eyüpspor", stadium: "Diyarbakır Stadyumu", ai: "Ev Sahibi Avantajı (MS 1)", homeForm: ["W","W","D","W","L"], awayForm: ["L","L","W","D","L"], prob: [52, 28, 20], xG: "2.40", over: "%52", btts: "%48 (Yok)", corner: "9.0", card: "5.1", score: "2 - 0", comment: "Amedspor seyircisi önünde yüksek tempolu ve baskılı bir oyun sergilemeye devam ediyor." },
+            { id: 6, date: "01.11.2026", time: "16:00", home: "İstanbul Başakşehir FK", away: "Samsunspor", stadium: "Başakşehir Fatih Terim Stadyumu", ai: "Çekişmeli Maç (MS 1)", homeForm: ["L","W","D","W","L"], awayForm: ["L","L","W","W","D"], prob: [46, 31, 23], xG: "2.35", over: "%50", btts: "%52 (Var)", corner: "9.8", card: "3.7", score: "2 - 1", comment: "Orta saha mücadelesinin ön planda olacağı taktiksel bir karşılaşma bekleniyor." },
+            { id: 7, date: "01.11.2026", time: "16:00", home: "Trabzonspor", away: "Gaziantep FK", stadium: "Papara Park", ai: "Farklı Galibiyet (MS 1)", homeForm: ["W","W","W","D","W"], awayForm: ["L","L","D","W","L"], prob: [64, 22, 14], xG: "3.20", over: "%75", btts: "%55 (Var)", corner: "11.2", card: "4.0", score: "3 - 0", comment: "Trabzonspor hücum hatlarındaki formda isimleriyle maçı domine edecektir." },
+            { id: 8, date: "01.11.2026", time: "19:00", home: "Kasımpaşa SK", away: "Beşiktaş", stadium: "Recep Tayyip Erdoğan Stadyumu", ai: "Bol Gol Beklentisi (Üst 2.5)", homeForm: ["W","W","L","L","W"], awayForm: ["W","L","W","W","D"], prob: [28, 27, 45], xG: "3.15", over: "%78", btts: "%70 (Var)", corner: "10.8", card: "5.5", score: "1 - 2", comment: "Beşiktaş zorlu deplasmanda galibiyet ararken Kasımpaşa kontrataklarla tehlikeli olacaktır." },
+            { id: 9, date: "02.11.2026", time: "20:00", home: "Gençlerbirliği", away: "Corendon Alanyaspor", stadium: "Eryaman Stadyumu", ai: "Düşük Tempo (Alt 2.5)", homeForm: ["L","L","D","D","L"], awayForm: ["L","L","W","D","L"], prob: [35, 36, 29], xG: "1.85", over: "%38", btts: "%44 (Yok)", corner: "8.4", card: "4.3", score: "1 - 1", comment: "İki tarafın da öncelikle savunma güvenliğini ön planda tutması bekleniyor." }
         ];
 
         function renderMatches() {
-            const tbody = id => document.getElementById(id);
-            tbody('match-list').innerHTML = matches.map(m => `
+            const tbody = document.getElementById('match-list');
+            tbody.innerHTML = matches.map(m => `
                 <tr onclick="openModal(${m.id})">
                     <td>${m.date}</td>
                     <td>${m.time}</td>
@@ -405,11 +405,9 @@
             document.getElementById('statCard').innerText = m.card;
             document.getElementById('statScore').innerText = m.score;
 
-            // Form İkonları
             document.getElementById('homeForm').innerHTML = m.homeForm.map(f => `<span class="dot ${f}">${f}</span>`).join('');
             document.getElementById('awayForm').innerHTML = m.awayForm.map(f => `<span class="dot ${f}">${f}</span>`).join('');
 
-            // İhtimal Barları
             const bHome = document.getElementById('barHome');
             const bDraw = document.getElementById('barDraw');
             const bAway = document.getElementById('barAway');
